@@ -8,7 +8,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    queryInterface.removeColumn('Person', 'firstName');
-    queryInterface.removeColumn('Person', 'lastName');
+    queryInterface.removeColumn('Users', 'firstName');
+    queryInterface.removeColumn('Users', 'lastName');
   }
 };
