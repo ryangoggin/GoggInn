@@ -195,7 +195,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     return res.status(201).json({id, url, preview});
 });
 
-// PUT /api/spots/:spotId
+// PUT /api/spots/:spotId: Edit a Spot
 router.put('/:spotId', requireAuth, async (req, res) => {
     let currUserId = req.user.id;
     let spot = await Spot.findByPk(req.params.spotId);
@@ -255,6 +255,36 @@ router.put('/:spotId', requireAuth, async (req, res) => {
     spot.update(req.body);
 
     return res.json(spot);
+});
+
+// DELETE /api/spots/:spotId: Delete a Spot
+router.delete('/:spotId', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let spot = await Spot.findByPk(req.params.spotId);
+
+    // Spot must exist to add an image --> can make a 404 error handler on refactor
+    if (!spot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    // Only authorized if currUser is the owner of the spot --> can make auth middleware on refactor
+    let ownerId = spot.ownerId;
+    if (currUserId !== ownerId) {
+        return res.status(403).json({
+            message: "Forbidden",
+            statusCode: 403
+        });
+    }
+
+    spot.destroy();
+
+    return res.json({
+        message: "Successfully deleted",
+        statusCode: 200
+    });
 });
 
 //export the router for use in ./api/index.js
