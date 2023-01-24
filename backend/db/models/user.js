@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     // Phase 3: toSafeObject and validatePassword instance methods & getCurrentUsersById, login, and signup static methods
     toSafeObject() {
-      const { id, username, email } = this; // context will be the User instance
-      return { id, username, email };
+      const { id, username, email, firstName, lastName } = this; // context will be the User instance (need to add first and last name)
+      return { id, username, email, firstName, lastName };
     }
 
     validatePassword(password) {
@@ -120,7 +120,7 @@ module.exports = (sequelize, DataTypes) => {
       // Phase 3: other scopes
       scopes: {
         currentUser: {
-          attributes: { exclude: ["hashedPassword"] }
+          attributes: { exclude: ["hashedPassword", "createdAt", "updatedAt"] } //hide createdAt and updatedAt as well
         },
         loginUser: {
           attributes: {}
