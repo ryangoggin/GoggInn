@@ -29,6 +29,13 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         hooks: true
       });
+
+      // One spot to many bookings association
+      Spot.hasMany(models.Booking, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE',
+        hooks: true
+      });
     }
   }
   Spot.init({

@@ -60,6 +60,13 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         hooks: true
       });
+
+      // One user to many bookings association
+      User.hasMany(models.Booking, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        hooks: true
+      });
     }
   };
 
