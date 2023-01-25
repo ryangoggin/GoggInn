@@ -3,7 +3,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const { Spot, Review, SpotImage, User, sequelize } = require('../../db/models');
+const { Spot, Review, SpotImage, ReviewImage, User, sequelize } = require('../../db/models');
+const review = require('../../db/models/review');
 const { requireAuth } = require('../../utils/auth');
 
 // GET /api/spots: Get all Spots
@@ -19,6 +20,7 @@ router.get('/', async (req, res) => {
         let reviews = await Review.findAll({
             where: { spotId },
             attributes: [
+                // REFACTOR: use Review.count({ where: {} }) and Review.sum({ where: {} }), there's also a sequelize.fn('avg) function that can be used too
                 [sequelize.fn('count', sequelize.col('stars')), 'countRatings'],
                 [sequelize.fn('sum', sequelize.col('stars')), 'sumRatings']
             ]
@@ -57,6 +59,7 @@ router.get('/current', requireAuth, async (req, res) => {
         let reviews = await Review.findAll({
             where: { spotId },
             attributes: [
+                // REFACTOR: use Review.count({ where: {} }) and Review.sum({ where: {} }), there's also a sequelize.fn('avg) function that can be used too
                 [sequelize.fn('count', sequelize.col('stars')), 'countRatings'],
                 [sequelize.fn('sum', sequelize.col('stars')), 'sumRatings']
             ]
@@ -98,6 +101,7 @@ router.get('/:spotId', async (req, res) => {
     let reviews = await Review.findAll({
         where: { spotId },
         attributes: [
+            // REFACTOR: use Review.count({ where: {} }) and Review.sum({ where: {} }), there's also a sequelize.fn('avg) function that can be used too
             [sequelize.fn('count', sequelize.col('stars')), 'countRatings'],
             [sequelize.fn('sum', sequelize.col('stars')), 'sumRatings']
         ]
@@ -192,7 +196,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     const newImage = await SpotImage.create({ spotId: req.params.spotId, ...req.body });
     let {id, url, preview} = newImage;
 
-    return res.status(201).json({id, url, preview});
+    return res.json({id, url, preview});
 });
 
 // PUT /api/spots/:spotId: Edit a Spot
@@ -285,6 +289,92 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
         message: "Successfully deleted",
         statusCode: 200
     });
+});
+
+// Feature 2: Reviews --> GET /api/spots/:spotId/reviews: Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', async (req, res) => {
+    let reviews = await Review.findAll({
+        where: { spotId: req.params.spotId }
+    });
+
+    //for 404 purposes:
+    let spot = await Spot.findByPk(req.params.spotId);
+
+    if (!spot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    let POJOreviews = []; //fill with each review converted to POJO
+
+    for (let review of reviews) {
+        let reviewId = review.id;
+        let userId = review.userId;
+        review = review.toJSON();
+        //User
+        let user = await User.findOne({
+            where: { id: userId },
+            attributes: ['id', 'firstName', 'lastName']
+        });
+        review.User = user;
+        //ReviewImages
+        let reviewImages = await ReviewImage.findAll({
+            where: { reviewId },
+            attributes: ['id', 'url']
+        });
+        review.reviewImages = reviewImages;
+
+        POJOreviews.push(review);
+    }
+
+    return res.json({ Reviews: POJOreviews });
+});
+
+// Feature 2: Reviews --> POST /api/spots/:spotId/reviews
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let spot = await Spot.findByPk(req.params.spotId);
+
+    // Spot must exist to add review --> can make a 404 error handler on refactor
+    if (!spot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    // Only authorized if currUser hasn't made a review for this spot yet --> can make auth middleware on refactor
+    let spotReviews = await Review.findAll({
+        where: { spotId: spot.id }
+    });
+    for (let review of spotReviews) {
+        if (currUserId === review.userId) {
+            return res.status(403).json({
+                message: "User already has a review for this spot",
+                statusCode: 403
+            });
+        }
+    }
+
+    let valError = {
+        message: 'Validation Error',
+        statusCode: 400
+    };
+    //validate spot --> create a validateSpot middleware fxn on refactor (gets 500 code, not 400 when validation set in spot.js violated)
+    let {review, stars} = req.body;
+    if (!review) {
+        valError.error = "Review text is required";
+        return res.status(400).json(valError);
+    } else if (!stars || !Number.isInteger(stars) || stars < 0 || stars > 5) {
+        valError.error = "Stars must be an integer from 1 to 5";
+        return res.status(400).json(valError);
+    }
+
+    const newReview = await Review.create({ userId: currUserId, spotId: parseInt(req.params.spotId), ...req.body });
+
+    return res.status(201).json(newReview);
 });
 
 //export the router for use in ./api/index.js
