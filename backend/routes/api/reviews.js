@@ -95,7 +95,7 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
     let currUserId = req.user.id;
     let editReview = await Review.findByPk(req.params.reviewId)
 
-    // Review must exist to add an image --> can make a 404 error handler on refactor
+    // Review must exist to edit --> can make a 404 error handler on refactor
     if (!editReview) {
         return res.status(404).json({
             message: "Review couldn't be found",
@@ -132,7 +132,34 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
 });
 
 // DELETE /api/reviews/:reviewId: Delete a Review
+router.delete('/:reviewId', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let review = await Review.findByPk(req.params.reviewId)
 
+    // Review must exist to delete --> can make a 404 error handler on refactor
+    if (!review) {
+        return res.status(404).json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    // Only authorized if currUser is the one who created the review --> can make auth middleware on refactor
+    let userId = review.userId;
+    if (currUserId !== userId) {
+        return res.status(403).json({
+            message: "Forbidden",
+            statusCode: 403
+        });
+    }
+
+    review.destroy();
+
+    return res.json({
+        message: "Successfully deleted",
+        statusCode: 200
+    });
+});
 
 //export the router for use in ./api/index.js
 module.exports = router;
