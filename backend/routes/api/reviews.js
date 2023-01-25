@@ -87,8 +87,51 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
     const newImage = await ReviewImage.create({ reviewId: req.params.reviewId, ...req.body });
     let {id, url} = newImage;
 
-    return res.status(201).json({id, url});
+    return res.json({id, url});
 });
+
+//PUT /api/reviews/:reviewId: Edit a Review
+router.put('/:reviewId', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let editReview = await Review.findByPk(req.params.reviewId)
+
+    // Review must exist to add an image --> can make a 404 error handler on refactor
+    if (!editReview) {
+        return res.status(404).json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    // Only authorized if currUser is the one who created the review --> can make auth middleware on refactor
+    let userId = editReview.userId;
+    if (currUserId !== userId) {
+        return res.status(403).json({
+            message: "Forbidden",
+            statusCode: 403
+        });
+    }
+
+    let valError = {
+        message: 'Validation Error',
+        statusCode: 400
+    };
+    //validate spot --> create a validateSpot middleware fxn on refactor (gets 500 code, not 400 when validation set in spot.js violated)
+    let {review, stars} = req.body;
+    if (!review) {
+        valError.error = "Review text is required";
+        return res.status(400).json(valError);
+    } else if (!stars || !Number.isInteger(stars) || stars < 0 || stars > 5) {
+        valError.error = "Stars must be an integer from 1 to 5";
+        return res.status(400).json(valError);
+    }
+
+    editReview.update(req.body);
+
+    return res.json(editReview);
+});
+
+// DELETE /api/reviews/:reviewId: Delete a Review
 
 
 //export the router for use in ./api/index.js
