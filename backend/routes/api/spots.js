@@ -105,7 +105,7 @@ router.get('/:spotId', async (req, res) => {
     let countRatings = reviews[0].dataValues.countRatings;
     let sumRatings = reviews[0].dataValues.sumRatings;
     let avgRating = sumRatings/countRatings;
-    spot.numReviews = countRatings;
+    spot.numReviews = parseInt(countRatings);
     spot.avgStarRating = avgRating;
     //SpotImages
     let images = await SpotImage.findAll({
@@ -123,7 +123,7 @@ router.get('/:spotId', async (req, res) => {
     return res.json(spot);
 });
 
-// POST /api/spots: Create a Spot
+// POST /api/spots: Create a Spot --> results in server error for getting spots until after image is created, refactor to avoid this
 router.post('/', requireAuth, async (req, res) => {
     let ownerId = req.user.id;
 
