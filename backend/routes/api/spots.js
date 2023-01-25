@@ -19,6 +19,7 @@ router.get('/', async (req, res) => {
         let reviews = await Review.findAll({
             where: { spotId },
             attributes: [
+                // REFACTOR: use Review.count({ where: {} }) and Review.sum({ where: {} }), there's also a sequelize.fn('avg) function that can be used too
                 [sequelize.fn('count', sequelize.col('stars')), 'countRatings'],
                 [sequelize.fn('sum', sequelize.col('stars')), 'sumRatings']
             ]
@@ -57,6 +58,7 @@ router.get('/current', requireAuth, async (req, res) => {
         let reviews = await Review.findAll({
             where: { spotId },
             attributes: [
+                // REFACTOR: use Review.count({ where: {} }) and Review.sum({ where: {} }), there's also a sequelize.fn('avg) function that can be used too
                 [sequelize.fn('count', sequelize.col('stars')), 'countRatings'],
                 [sequelize.fn('sum', sequelize.col('stars')), 'sumRatings']
             ]
@@ -98,7 +100,7 @@ router.get('/:spotId', async (req, res) => {
     let reviews = await Review.findAll({
         where: { spotId },
         attributes: [
-            // REFACTOR: use Review.count({ where: {} }) and Review.sum({ where: {} })
+            // REFACTOR: use Review.count({ where: {} }) and Review.sum({ where: {} }), there's also a sequelize.fn('avg) function that can be used too
             [sequelize.fn('count', sequelize.col('stars')), 'countRatings'],
             [sequelize.fn('sum', sequelize.col('stars')), 'sumRatings']
         ]
