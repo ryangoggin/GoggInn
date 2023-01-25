@@ -1,7 +1,7 @@
 // Phase 4:
 const express = require('express')
 
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 
 // Phase 5:
@@ -56,10 +56,11 @@ router.delete(
     }
 );
 
-// Phase 4: Restore session user
+// Phase 4: Restore session user (AKA Get Current User)
 router.get(
     '/',
     restoreUser,
+    requireAuth, //include requireAuth when getting current user
     (req, res) => {
       const { user } = req;
       if (user) {
