@@ -51,6 +51,44 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.json({ Reviews: POJOreviews });
 });
 
+// POST /api/reviews/:reviewId/images: Add an Image to a Review based on the Review's id
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let review = await Review.findByPk(req.params.reviewId)
+
+    // Review must exist to add an image --> can make a 404 error handler on refactor
+    if (!review) {
+        return res.status(404).json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    // Only authorized if currUser is the one who created the review --> can make auth middleware on refactor
+    let userId = review.userId;
+    if (currUserId !== userId) {
+        return res.status(403).json({
+            message: "Forbidden",
+            statusCode: 403
+        });
+    }
+
+    // Cannot add more than 10 images --> could also refactor to use count aggregate
+    let reviewImages = await ReviewImage.findAll({
+        where: { reviewId: review.id }
+    });
+    if (reviewImages.length >= 10) {
+        return res.status(403).json({
+            message: "Maximum number of images for this resource was reached",
+            statusCode: 403
+        });
+    }
+
+    const newImage = await ReviewImage.create({ reviewId: req.params.reviewId, ...req.body });
+    let {id, url} = newImage;
+
+    return res.status(201).json({id, url});
+});
 
 
 //export the router for use in ./api/index.js
