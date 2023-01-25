@@ -98,6 +98,7 @@ router.get('/:spotId', async (req, res) => {
     let reviews = await Review.findAll({
         where: { spotId },
         attributes: [
+            // REFACTOR: use Review.count({ where: {} }) and Review.sum({ where: {} })
             [sequelize.fn('count', sequelize.col('stars')), 'countRatings'],
             [sequelize.fn('sum', sequelize.col('stars')), 'sumRatings']
         ]
