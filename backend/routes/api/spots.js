@@ -8,9 +8,44 @@ const booking = require('../../db/models/booking');
 const review = require('../../db/models/review');
 const { requireAuth } = require('../../utils/auth');
 
-// GET /api/spots: Get all Spots
+// GET /api/spots: Get all Spots --> Add Query Filters to Get All Spots
 router.get('/', async (req, res) => {
-    const spots = await Spot.findAll();
+    // set up pagination for queries
+    let {page, size} = req.query;
+    if (!page) page = 1; //default page is 1
+    if (!size) size = 20; //default size is 20
+    page = parseInt(page); //req.query is string!
+    size = parseInt(size); //req.query is string!
+
+    let pagination = {}; //needs to be spread in res.json below!
+    let queryValError = {
+        message: "Validation Error",
+        statusCode: 400
+    }; //set up to add specific validation errors as they occur
+
+    // use equations to get offset and limit from page and size:
+    if (page >= 1 && page <= 10 && size >= 1 && size <= 20) {
+        pagination.offset = size * (page - 1);
+        pagination.limit = size;
+    }
+    // specify page or size for val error
+    else {
+        if (page < 1 || page > 10) {
+            queryValError.errors = {
+                page: "Page must be greater than or equal to 1 and less than or equal to 10"
+            };
+            res.status(400).json(queryValError);
+        } else if (size < 1 || size > 20) {
+            queryValError.errors = {
+                size: "Size must be greater than or equal to 1 and less than or equal to 20"
+            };
+            res.status(400).json(queryValError);
+        }
+    }
+
+    const spots = await Spot.findAll({
+        ...pagination
+    });
     let POJOspots = [];
 
     //convert all spots to JSON to add avgRating and previewImage
@@ -40,7 +75,7 @@ router.get('/', async (req, res) => {
         POJOspots.push(spot);
     }
 
-    return res.json({ Spots: POJOspots });
+    return res.json({ Spots: POJOspots, page: page, size: size });
 });
 
 // GET /api/spots/current: Get all Spots owned by the Current User
