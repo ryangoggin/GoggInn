@@ -3,7 +3,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const { Spot, Review, SpotImage, ReviewImage, User, sequelize } = require('../../db/models');
+const { Spot, Review, SpotImage, ReviewImage, User, Booking, sequelize } = require('../../db/models');
+const booking = require('../../db/models/booking');
 const review = require('../../db/models/review');
 const { requireAuth } = require('../../utils/auth');
 
@@ -375,6 +376,81 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     const newReview = await Review.create({ userId: currUserId, spotId: parseInt(req.params.spotId), ...req.body });
 
     return res.status(201).json(newReview);
+});
+
+// Feature 3: Bookings --> // GET /api/:spotId/bookings: Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let spot = await Spot.findByPk(req.params.spotId);
+
+    // Spot must exist to check bookings --> can make a 404 error handler on refactor
+    if (!spot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    //Success response if you ARE NOT the spot owner
+    let ownerId = spot.ownerId;
+    if (currUserId !== ownerId) {
+        let bookings = await Booking.findAll({
+            where: { spotId: spot.id },
+            attributes: ["spotId", "startDate", "endDate"]
+        });
+
+        let POJObookings = []; // fill with reviews converted to POJOs
+
+        //convert each booking to a POJO to convert start and end Date objects
+        for (let booking of bookings) {
+            booking = booking.toJSON();
+            //converting start and end Date to yyyy-mm-dd
+            let startDate = booking.startDate.toISOString().slice(0, 10);
+            booking.startDate = startDate;
+            let endDate = booking.endDate.toISOString().slice(0, 10);
+            booking.endDate = endDate;
+
+            POJObookings.push(booking);
+        }
+
+        return res.json({ Bookings: POJObookings });
+    }
+    //Success response if you ARE the spot owner
+    else {
+        let bookings = await Booking.findAll({
+            where: { spotId: spot.id }
+        });
+
+        let POJObookings = []; // fill with reviews converted to POJOs
+
+        //convert each booking to a POJO to convert start and end Date objects
+        for (let booking of bookings) {
+            booking = booking.toJSON();
+            //User
+            let userId = booking.userId;
+            let user = await User.findOne({
+                where: { id: userId },
+                attributes: ['id', 'firstName', 'lastName']
+            });
+            booking.User = user;
+            //converting start and end Date to yyyy-mm-dd
+            let startDate = booking.startDate.toISOString().slice(0, 10);
+            booking.startDate = startDate;
+            let endDate = booking.endDate.toISOString().slice(0, 10);
+            booking.endDate = endDate;
+            //converting createdAt and updatedAT to yyyy-mm-dd hh:mm:ss
+            let createdAtDate = booking.createdAt.toISOString().slice(0, 10);
+            let createdAtTime = booking.createdAt.toISOString().slice(11, 19);
+            booking.createdAt = `${createdAtDate} ${createdAtTime}`;
+            let updatedAtDate = booking.updatedAt.toISOString().slice(0, 10);
+            let updatedAtTime = booking.updatedAt.toISOString().slice(11, 19);
+            booking.updatedAt = `${updatedAtDate} ${updatedAtTime}`;
+
+            POJObookings.push(booking);
+        }
+
+        return res.json({ Bookings: POJObookings });
+    }
 });
 
 //export the router for use in ./api/index.js
