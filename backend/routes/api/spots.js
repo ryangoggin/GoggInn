@@ -3,7 +3,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const { Spot, Review, SpotImage, ReviewImage, User, sequelize } = require('../../db/models');
+const { Spot, Review, SpotImage, ReviewImage, User, Booking, sequelize } = require('../../db/models');
+const booking = require('../../db/models/booking');
 const review = require('../../db/models/review');
 const { requireAuth } = require('../../utils/auth');
 
@@ -376,6 +377,184 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 
     return res.status(201).json(newReview);
 });
+
+// Feature 3: Bookings --> // GET /api/:spotId/bookings: Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let spot = await Spot.findByPk(req.params.spotId);
+
+    // Spot must exist to check bookings --> can make a 404 error handler on refactor
+    if (!spot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    //Success response if you ARE NOT the spot owner
+    let ownerId = spot.ownerId;
+    if (currUserId !== ownerId) {
+        let bookings = await Booking.findAll({
+            where: { spotId: spot.id },
+            attributes: ["spotId", "startDate", "endDate"]
+        });
+
+        let POJObookings = []; // fill with reviews converted to POJOs
+
+        //convert each booking to a POJO to convert start and end Date objects
+        for (let booking of bookings) {
+            booking = booking.toJSON();
+            //converting start and end Date to yyyy-mm-dd
+            let startDate = booking.startDate.toISOString().slice(0, 10);
+            booking.startDate = startDate;
+            let endDate = booking.endDate.toISOString().slice(0, 10);
+            booking.endDate = endDate;
+
+            POJObookings.push(booking);
+        }
+
+        return res.json({ Bookings: POJObookings });
+    }
+    //Success response if you ARE the spot owner
+    else {
+        let bookings = await Booking.findAll({
+            where: { spotId: spot.id }
+        });
+
+        let POJObookings = []; // fill with reviews converted to POJOs
+
+        //convert each booking to a POJO to convert start and end Date objects
+        for (let booking of bookings) {
+            booking = booking.toJSON();
+            //User
+            let userId = booking.userId;
+            let user = await User.findOne({
+                where: { id: userId },
+                attributes: ['id', 'firstName', 'lastName']
+            });
+            booking.User = user;
+            //converting start and end Date to yyyy-mm-dd
+            let startDate = booking.startDate.toISOString().slice(0, 10);
+            booking.startDate = startDate;
+            let endDate = booking.endDate.toISOString().slice(0, 10);
+            booking.endDate = endDate;
+            //converting createdAt and updatedAT to yyyy-mm-dd hh:mm:ss
+            let createdAtDate = booking.createdAt.toISOString().slice(0, 10);
+            let createdAtTime = booking.createdAt.toISOString().slice(11, 19);
+            booking.createdAt = `${createdAtDate} ${createdAtTime}`;
+            let updatedAtDate = booking.updatedAt.toISOString().slice(0, 10);
+            let updatedAtTime = booking.updatedAt.toISOString().slice(11, 19);
+            booking.updatedAt = `${updatedAtDate} ${updatedAtTime}`;
+
+            POJObookings.push(booking);
+        }
+
+        return res.json({ Bookings: POJObookings });
+    }
+});
+
+// Feature 3: Bookings --> POST /api/spots/:spotId/bookings: Create a Booking from a Spot based on the Spot's id
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let spot = await Spot.findByPk(req.params.spotId);
+
+    // Spot must exist to create bookings --> can make a 404 error handler on refactor
+    if (!spot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    // Spot must NOT belong to current user
+    if (spot.ownerId === currUserId) {
+        return res.status(403).json({
+            message: "Forbidden: Cannot book spots you own",
+            statusCode: 403
+        });
+    }
+
+    // Check that endDate is not on or before startDate:
+    let {startDate, endDate} = req.body;
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+
+    let compStart = startDate.getTime();
+    let compEnd = endDate.getTime();
+    if (compEnd <= startDate) {
+        return res.status(400).json({
+            message: "Validation error",
+            statusCode: 400,
+            errors: {
+              endDate: "endDate cannot be on or before startDate"
+            }
+        })
+    }
+
+    // Check each booking for spot, compare start and end Dates to created booking to avoid conflicts
+    let bookings = await Booking.findAll({
+        where: { spotId: spot.id }
+    });
+    for (let booking of bookings) {
+        // to avoid conflicts from time, run booking's through .toISOString() and slice 0, 10 to get rid of time.
+        let bookingStartDate = new Date(booking.startDate.toISOString().slice(0, 10));
+        let bookingEndDate = new Date(booking.endDate.toISOString().slice(0, 10));
+
+        // convert to comparable values with .getTime()
+        let compBookStart = bookingStartDate.getTime();
+        let compBookEnd = bookingEndDate.getTime();
+
+        // create bookingConflict obj to send as response in case of booking conflict:
+        let bookingConflict = {
+            message: "Sorry, this spot is already booked for the specified dates",
+            statusCode: 403
+        };
+
+        // startDate conflicts with booking:
+        if (compStart >= compBookStart && compStart <= compBookEnd) {
+            // add startDate error to bookingConflict
+            bookingConflict.errors = {startDate: "Start date conflicts with an existing booking"}
+            return res.status(403).json(bookingConflict);
+        }
+        // endDate conflicts with booking:
+        else if (compEnd >= compBookStart && compEnd <= compBookEnd) {
+            // add endDate error to bookingConflict
+            bookingConflict.errors = {endDate: "End date conflicts with an existing booking"}
+            return res.status(403).json(bookingConflict);
+        }
+        // startDate and endDate envelope current booking:
+        else if (compStart < compBookStart && compEnd > compBookEnd) {
+            // add both startDate and endDate error to bookingConflict
+            bookingConflict.errors = {
+                startDate: "Start date conflicts with an existing booking",
+                endDate: "End date conflicts with an existing booking"
+            }
+            return res.status(403).json(bookingConflict);
+        }
+    }
+    // Create new booking if no booking conflicts:
+    let newBooking = await Booking.create({ spotId: parseInt(req.params.spotId), userId: currUserId, ...req.body });
+
+    // convert newBooing to POJO to convert start and end Dates and createdAt/updatedAt formatting:
+    newBooking = newBooking.toJSON();
+
+    //converting start and end Date to yyyy-mm-dd
+    let newStartDate = newBooking.startDate.toISOString().slice(0, 10);
+    newBooking.startDate = newStartDate;
+    let newEndDate = newBooking.endDate.toISOString().slice(0, 10);
+    newBooking.endDate = newEndDate;
+    //converting createdAt and updatedAT to yyyy-mm-dd hh:mm:ss
+    let createdAtDate = newBooking.createdAt.toISOString().slice(0, 10);
+    let createdAtTime = newBooking.createdAt.toISOString().slice(11, 19);
+    newBooking.createdAt = `${createdAtDate} ${createdAtTime}`;
+    let updatedAtDate = newBooking.updatedAt.toISOString().slice(0, 10);
+    let updatedAtTime = newBooking.updatedAt.toISOString().slice(11, 19);
+    newBooking.updatedAt = `${updatedAtDate} ${updatedAtTime}`;
+
+
+    return res.json(newBooking);
+});
+
 
 //export the router for use in ./api/index.js
 module.exports = router;
