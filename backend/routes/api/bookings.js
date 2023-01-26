@@ -171,5 +171,50 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     return res.json(editBooking);
 });
 
+// DELETE /api/bookings/:bookingId: Delete a Booking
+router.delete('/:bookingId', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let booking = await Booking.findByPk(req.params.bookingId);
+
+    // Booking must exist to delete --> can make a 404 error handler on refactor
+    if (!booking) {
+        return res.status(404).json({
+            message: "Booking couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    // Booking must belong to current user OR spot must belong to current user to delete booking
+    let spot = await Spot.findByPk(booking.spotId);
+    if (booking.userId !== currUserId && spot.ownerId !== currUserId) {
+        return res.status(403).json({
+            message: "Forbidden: Cannot delete booking if you are not the spot owner or booking owner",
+            statusCode: 403
+        });
+    }
+
+    //
+    // Check that booking hasn't already started (need to convert to Date objects to use .getTime()): --> refactor to prevent changing startDate if booking in progress?
+    let compToday = Date.now();
+    let startDate = booking.startDate;
+    startEnd = new Date(startDate);
+
+    let compStart = startDate.getTime();
+    if (compStart <= compToday) {
+        return res.status(403).json({
+            message: "Bookings that have been started can't be deleted",
+            statusCode: 403
+          });
+    }
+
+    // delete the booking if no conflicts
+    booking.destroy();
+
+    return res.json({
+        message: "Successfully deleted",
+        statusCode: 200
+    });
+});
+
 //export the router for use in ./api/index.js
 module.exports = router;
