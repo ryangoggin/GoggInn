@@ -491,7 +491,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
         })
     }
 
-    // Check each booking, compare start and end Dates to created booking to avoid conflicts
+    // Check each booking for spot, compare start and end Dates to created booking to avoid conflicts
     let bookings = await Booking.findAll({
         where: { spotId: spot.id }
     });
