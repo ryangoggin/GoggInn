@@ -453,5 +453,108 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
     }
 });
 
+// Feature 3: Bookings --> POST /api/spots/:spotId/bookings: Create a Booking from a Spot based on the Spot's id
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+    let currUserId = req.user.id;
+    let spot = await Spot.findByPk(req.params.spotId);
+
+    // Spot must exist to create bookings --> can make a 404 error handler on refactor
+    if (!spot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        });
+    }
+
+    // Spot must NOT belong to current user
+    if (spot.ownerId === currUserId) {
+        return res.status(403).json({
+            message: "Forbidden: Cannot book spots you own",
+            statusCode: 403
+        });
+    }
+
+    // Check that endDate is not on or before startDate:
+    let {startDate, endDate} = req.body;
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+
+    let compStart = startDate.getTime();
+    let compEnd = endDate.getTime();
+    if (compEnd <= startDate) {
+        return res.status(400).json({
+            message: "Validation error",
+            statusCode: 400,
+            errors: {
+              endDate: "endDate cannot be on or before startDate"
+            }
+        })
+    }
+
+    // Check each booking, compare start and end Dates to created booking to avoid conflicts
+    let bookings = await Booking.findAll({
+        where: { spotId: spot.id }
+    });
+    for (let booking of bookings) {
+        // to avoid conflicts from time, run booking's through .toISOString() and slice 0, 10 to get rid of time.
+        let bookingStartDate = new Date(booking.startDate.toISOString().slice(0, 10));
+        let bookingEndDate = new Date(booking.endDate.toISOString().slice(0, 10));
+
+        // convert to comparable values with .getTime()
+        let compBookStart = bookingStartDate.getTime();
+        let compBookEnd = bookingEndDate.getTime();
+
+        // create bookingConflict obj to send as response in case of booking conflict:
+        let bookingConflict = {
+            message: "Sorry, this spot is already booked for the specified dates",
+            statusCode: 403
+        };
+
+        // startDate conflicts with booking:
+        if (compStart >= compBookStart && compStart <= compBookEnd) {
+            // add startDate error to bookingConflict
+            bookingConflict.errors = {startDate: "Start date conflicts with an existing booking"}
+            return res.status(403).json(bookingConflict);
+        }
+        // endDate conflicts with booking:
+        else if (compEnd >= compBookStart && compEnd <= compBookEnd) {
+            // add endDate error to bookingConflict
+            bookingConflict.errors = {endDate: "End date conflicts with an existing booking"}
+            return res.status(403).json(bookingConflict);
+        }
+        // startDate and endDate envelope current booking:
+        else if (compStart < compBookStart && compEnd > compBookEnd) {
+            // add both startDate and endDate error to bookingConflict
+            bookingConflict.errors = {
+                startDate: "Start date conflicts with an existing booking",
+                endDate: "End date conflicts with an existing booking"
+            }
+            return res.status(403).json(bookingConflict);
+        }
+    }
+    // Create new booking if no booking conflicts:
+    let newBooking = await Booking.create({ spotId: parseInt(req.params.spotId), userId: currUserId, ...req.body });
+
+    // convert newBooing to POJO to convert start and end Dates and createdAt/updatedAt formatting:
+    newBooking = newBooking.toJSON();
+
+    //converting start and end Date to yyyy-mm-dd
+    let newStartDate = newBooking.startDate.toISOString().slice(0, 10);
+    newBooking.startDate = newStartDate;
+    let newEndDate = newBooking.endDate.toISOString().slice(0, 10);
+    newBooking.endDate = newEndDate;
+    //converting createdAt and updatedAT to yyyy-mm-dd hh:mm:ss
+    let createdAtDate = newBooking.createdAt.toISOString().slice(0, 10);
+    let createdAtTime = newBooking.createdAt.toISOString().slice(11, 19);
+    newBooking.createdAt = `${createdAtDate} ${createdAtTime}`;
+    let updatedAtDate = newBooking.updatedAt.toISOString().slice(0, 10);
+    let updatedAtTime = newBooking.updatedAt.toISOString().slice(11, 19);
+    newBooking.updatedAt = `${updatedAtDate} ${updatedAtTime}`;
+
+
+    return res.json(newBooking);
+});
+
+
 //export the router for use in ./api/index.js
 module.exports = router;
