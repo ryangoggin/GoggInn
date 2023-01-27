@@ -4,46 +4,201 @@ const express = require('express');
 const router = express.Router();
 
 const { Spot, Review, SpotImage, ReviewImage, User, Booking, sequelize } = require('../../db/models');
-const booking = require('../../db/models/booking');
-const review = require('../../db/models/review');
 const { requireAuth } = require('../../utils/auth');
+const { Op } = require("sequelize");
 
 // GET /api/spots: Get all Spots --> Add Query Filters to Get All Spots
 router.get('/', async (req, res) => {
+    //set up to add specific query validation errors as they occur
+    let queryValError = {
+        message: "Validation Error",
+        statusCode: 400,
+        errors: {}
+    };
+
     // set up pagination for queries
     let {page, size} = req.query;
     if (!page) page = 1; //default page is 1
     if (!size) size = 20; //default size is 20
-    page = parseInt(page); //req.query is string!
-    size = parseInt(size); //req.query is string!
+    page = parseFloat(page); //req.query is string!
+    size = parseFloat(size); //req.query is string!
 
-    let pagination = {}; //needs to be spread in res.json below!
-    let queryValError = {
-        message: "Validation Error",
-        statusCode: 400
-    }; //set up to add specific validation errors as they occur
+    let pagination = {}; //needs to be spread in the spots query below!
 
     // use equations to get offset and limit from page and size:
-    if (page >= 1 && page <= 10 && size >= 1 && size <= 20) {
+    if (Number.isInteger(page) && page >= 1 && page <= 10 && Number.isInteger(size) && size >= 1 && size <= 20) {
         pagination.offset = size * (page - 1);
         pagination.limit = size;
     }
     // specify page or size for val error
     else {
-        if (page < 1 || page > 10) {
-            queryValError.errors = {
-                page: "Page must be greater than or equal to 1 and less than or equal to 10"
-            };
+        if (isNaN(page) || !Number.isInteger(page) || page < 1 || page > 10) {
+            queryValError.errors.page = "Page must be an integer greater than or equal to 1 and less than or equal to 10";
+        }
+        if (isNaN(size) || !Number.isInteger(size) || size < 1 || size > 20) {
+            queryValError.errors.size = "Size must be an integer greater than or equal to 1 and less than or equal to 20";
+        }
+        res.status(400).json(queryValError);
+    }
+
+    let where = {}; //needs to be used in the spots query below!
+
+    //building filters for the spots query below --> NOTE: to improve query speed add indexes to lat, lng, and price in migration file so SQL searches instead of scans for the query
+    //helper function to check lat/lng decimals do not exceed 7 places:
+    let isLatLngFormat = (decimal) => {
+        decimal = parseFloat(decimal);
+        if (decimal !== parseFloat(decimal.toFixed(7))) return false;
+        return true;
+    }
+
+    //BOTH minLat and maxLat filter:
+    if (req.query.minLat && req.query.maxLat) {
+        // if minLat OR maxLat are invalid
+        if ((isNaN(req.query.minLat) || !isLatLngFormat(req.query.minLat) || req.query.minLat < -90) || (isNaN(req.query.maxLat) || !isLatLngFormat(req.query.maxLat) || req.query.maxLat > 90)) {
+            //adds minLat error msg if it's invalid
+            if (isNaN(req.query.minLat) || !isLatLngFormat(req.query.minLat) || req.query.minLat < -90) {
+                queryValError.errors.minLat = "Minimum latitude is invalid";
+            }
+            //adds maxLat error msg if it's invalid
+            if (isNaN(req.query.maxLat) || !isLatLngFormat(req.query.maxLat) || req.query.maxLat > 90) {
+                queryValError.errors.maxLat = "Maximum latitude is invalid";
+            }
             res.status(400).json(queryValError);
-        } else if (size < 1 || size > 20) {
-            queryValError.errors = {
-                size: "Size must be greater than or equal to 1 and less than or equal to 20"
-            };
-            res.status(400).json(queryValError);
+        }
+        //  if BOTH are valid, filter between them
+        else {
+            where.lat = {[Op.between] : [req.query.minLat, req.query.maxLat]};
         }
     }
 
+    //minLat filter:
+    if (req.query.minLat && !req.query.maxLat) {
+        if (isNaN(req.query.minLat) || !isLatLngFormat(req.query.minLat) || req.query.minLat < -90) {
+            queryValError.errors = {
+                minLat: "Minimum latitude is invalid"
+            };
+            res.status(400).json(queryValError);
+        } else {
+            // if valid, filter greater than or equal to minLat
+            where.lat = {[Op.gte] : req.query.minLat};
+        }
+    }
+
+    //maxLat filter:
+    if (req.query.maxLat && !req.query.minLat) {
+        if (isNaN(req.query.maxLat) || !isLatLngFormat(req.query.maxLat) || req.query.maxLat > 90) {
+            queryValError.errors = {
+                maxLat: "Maximum latitude is invalid"
+            };
+            res.status(400).json(queryValError);
+        } else {
+            // if valid, filter less than or equal to maxLat
+            where.lat = {[Op.lte] : req.query.maxLat};
+        }
+    }
+
+    //BOTH minLng and maxLng filter:
+    if (req.query.minLng && req.query.maxLng) {
+        // if minLng OR maxLng are invalid
+        if ((isNaN(req.query.minLng) || !isLatLngFormat(req.query.minLng) || req.query.minLng < -180) || (isNaN(req.query.maxLng) || !isLatLngFormat(req.query.maxLng) || req.query.maxLng > 180)) {
+            //adds minLng error msg if it's invalid
+            if (isNaN(req.query.minLng) || !isLatLngFormat(req.query.minLng) || req.query.minLng < -180) {
+                queryValError.errors.minLng = "Minimum longitude is invalid";
+            }
+            //adds maxLng error msg if it's invalid
+            if (isNaN(req.query.maxLng) || !isLatLngFormat(req.query.maxLng) || req.query.maxLng > 180) {
+                queryValError.errors.maxLng = "Maximum longitude is invalid";
+            }
+            res.status(400).json(queryValError);
+        }
+        //  if BOTH are valid, filter between them
+        else {
+            where.lng = {[Op.between] : [req.query.minLng, req.query.maxLng]};
+        }
+    }
+
+    //minLng filter:
+    if (req.query.minLng && !req.query.maxLng) {
+        if (isNaN(req.query.minLng) || !isLatLngFormat(req.query.minLng) || req.query.minLng < -180) {
+            queryValError.errors = {
+                minLng: "Minimum longitude is invalid"
+            };
+            res.status(400).json(queryValError);
+        } else {
+            // if valid, filter greater than or equal to minLng
+            where.lng = {[Op.gte] : req.query.minLng};
+        }
+    }
+
+    //maxLng filter:
+    if (req.query.maxLng && !req.query.minLng) {
+        if (isNaN(req.query.maxLng) || !isLatLngFormat(req.query.maxLng) || req.query.maxLng > 180) {
+            queryValError.errors = {
+                maxLng: "Maximum longitude is invalid"
+            };
+            res.status(400).json(queryValError);
+        } else {
+            // if valid, filter less than or equal to maxLng
+            where.lng = {[Op.lte] : req.query.maxLng};
+        }
+    }
+
+    //helper function to check price decimals do not exceed 2 places:
+    let isDollarFormat = (decimal) => {
+        decimal = parseFloat(decimal);
+        if (decimal !== parseFloat(decimal.toFixed(2))) return false;
+        return true;
+    }
+
+    //BOTH minPrice and maxPrice filter:
+    if (req.query.minPrice && req.query.maxPrice) {
+        // if minPrice OR maxPrice are invalid
+        if ((isNaN(req.query.minPrice) || !isDollarFormat(req.query.minPrice) || req.query.minPrice < 0) || (isNaN(req.query.maxPrice) || !isDollarFormat(req.query.maxPrice) || req.query.maxPrice < 0)) {
+            //adds minPrice error msg if it's invalid
+            if (isNaN(req.query.minPrice) || !isDollarFormat(req.query.minPrice) || req.query.minPrice < 0) {
+                queryValError.errors.minPrice = "Minimum price must be valid and greater than or equal to 0";
+            }
+            //adds maxPrice error msg if it's invalid
+            if (isNaN(req.query.maxPrice) || !isDollarFormat(req.query.maxPrice) || req.query.maxPrice < 0) {
+                queryValError.errors.maxPrice = "Maximum price must be valid and greater than or equal to 0";
+            };
+            res.status(400).json(queryValError);
+        }
+        //  if BOTH are valid, filter between them
+        else {
+            where.price = {[Op.between] : [req.query.minPrice, req.query.maxPrice]};
+        }
+    }
+
+    //minPrice filter:
+    if (req.query.minPrice && !req.query.maxPrice) {
+        if (isNaN(req.query.minPrice) || !isDollarFormat(req.query.minPrice) || req.query.minPrice < 0) {
+            queryValError.errors = {
+                minPrice: "Minimum price must be valid and greater than or equal to 0"
+            };
+            res.status(400).json(queryValError);
+        } else {
+            // if valid, filter greater than or equal to minPrice
+            where.price = {[Op.gte] : req.query.minPrice};
+        }
+    }
+
+    //maxPrice filter:
+    if (req.query.maxPrice && !req.query.minPrice) {
+        if (isNaN(req.query.maxPrice) || !isDollarFormat(req.query.maxPrice) || req.query.maxPrice < 0) {
+            queryValError.errors = {
+                maxPrice: "Maximum price must be valid and greater than or equal to 0"
+            };
+            res.status(400).json(queryValError);
+        } else {
+            // if valid, filter less than or equal to maxPrice
+            where.price = {[Op.lte] : req.query.maxPrice};
+        }
+    }
+
+    //query for all Spots using req.query from where and ...pagination
     const spots = await Spot.findAll({
+        where,
         ...pagination
     });
     let POJOspots = [];
