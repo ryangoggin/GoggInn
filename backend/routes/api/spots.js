@@ -69,8 +69,12 @@ router.get('/', async (req, res) => {
         let image = await SpotImage.findOne({
             where: { spotId }
         });
-        let imageURL = image.url;
-        spot.previewImage = imageURL;
+        if (image) {
+            let imageURL = image.url;
+            spot.previewImage = imageURL;
+        } else {
+            spot.previewImage = null;
+        }
         //push into new arr to send as res
         POJOspots.push(spot);
     }
@@ -108,8 +112,12 @@ router.get('/current', requireAuth, async (req, res) => {
         let image = await SpotImage.findOne({
             where: { spotId }
         });
-        let imageURL = image.url;
-        spot.previewImage = imageURL;
+        if (image) {
+            let imageURL = image.url;
+            spot.previewImage = imageURL;
+        } else {
+            spot.previewImage = null;
+        }
         //push into new arr to send as res
         POJOspots.push(spot);
     }
