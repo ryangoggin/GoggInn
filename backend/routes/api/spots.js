@@ -46,8 +46,9 @@ router.get('/', async (req, res) => {
     //building filters for the spots query below --> NOTE: to improve query speed add indexes to lat, lng, and price in migration file so SQL searches instead of scans for the query
     //helper function to check lat/lng decimals do not exceed 7 places:
     let isLatLngFormat = (decimal) => {
-        decimal = parseFloat(decimal);
-        if (decimal !== parseFloat(decimal.toFixed(7))) return false;
+        //need to account for extra decimal being 0s, measure length of decimals after splitting by "."
+        let decimals = decimal.split(".")[1];
+        if (decimals.length > 7) return false;
         return true;
     }
 
@@ -145,8 +146,9 @@ router.get('/', async (req, res) => {
 
     //helper function to check price decimals do not exceed 2 places:
     let isDollarFormat = (decimal) => {
-        decimal = parseFloat(decimal);
-        if (decimal !== parseFloat(decimal.toFixed(2))) return false;
+        //need to account for extra decimal being 0s, measure length of decimals after splitting by "."
+        let decimals = decimal.split(".")[1];
+        if (decimals.length > 2) return false;
         return true;
     }
 
@@ -219,7 +221,7 @@ router.get('/', async (req, res) => {
         let countRatings = reviews[0].dataValues.countRatings;
         let sumRatings = reviews[0].dataValues.sumRatings;
         let avgRating = sumRatings/countRatings;
-        spot.avgRating = avgRating;
+        spot.avgRating = avgRating.toFixed(1); //round to 1 decimal place
         //previewImage
         let image = await SpotImage.findOne({
             where: { spotId }
@@ -262,7 +264,7 @@ router.get('/current', requireAuth, async (req, res) => {
         let countRatings = reviews[0].dataValues.countRatings;
         let sumRatings = reviews[0].dataValues.sumRatings;
         let avgRating = sumRatings/countRatings;
-        spot.avgRating = avgRating;
+        spot.avgRating = avgRating.toFixed(1); //round to 1 decimal place
         //previewImage
         let image = await SpotImage.findOne({
             where: { spotId }
@@ -309,7 +311,7 @@ router.get('/:spotId', async (req, res) => {
     let sumRatings = reviews[0].dataValues.sumRatings;
     let avgRating = sumRatings/countRatings;
     spot.numReviews = parseInt(countRatings);
-    spot.avgStarRating = avgRating;
+    spot.avgStarRating = avgRating.toFixed(1); //round to 1 decimal place
     //SpotImages
     let images = await SpotImage.findAll({
         where: { spotId },
