@@ -44,7 +44,7 @@ router.get('/current', requireAuth, async (req, res) => {
             where: { reviewId },
             attributes: ['id', 'url']
         });
-        review.reviewImages = reviewImages;
+        review.ReviewImages = reviewImages;
 
         POJOreviews.push(review);
     }
