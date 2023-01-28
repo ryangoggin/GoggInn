@@ -48,7 +48,9 @@ router.get('/', async (req, res) => {
     let isLatLngFormat = (decimal) => {
         //need to account for extra decimal being 0s, measure length of decimals after splitting by "."
         let decimals = decimal.split(".")[1];
-        if (decimals.length > 7) return false;
+        if (decimals) {
+            if (decimals.length > 7) return false;
+        }
         return true;
     }
 
@@ -148,7 +150,9 @@ router.get('/', async (req, res) => {
     let isDollarFormat = (decimal) => {
         //need to account for extra decimal being 0s, measure length of decimals after splitting by "."
         let decimals = decimal.split(".")[1];
-        if (decimals.length > 2) return false;
+        if (decimals) {
+            if (decimals.length > 2) return false;
+        }
         return true;
     }
 
