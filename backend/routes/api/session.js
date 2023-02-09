@@ -60,7 +60,7 @@ router.delete(
 router.get(
     '/',
     restoreUser,
-    requireAuth, //include requireAuth when getting current user
+    // requireAuth, //include requireAuth when getting current user, commented out for mod5 to have { user: null } response for mod 5 project
     (req, res) => {
       const { user } = req;
       if (user) {

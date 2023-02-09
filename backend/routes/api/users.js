@@ -71,7 +71,9 @@ router.post(
       newUser = newUser.toJSON();
       newUser.token = token;
 
-      return res.json(newUser);
+      return res.json({
+        user: newUser
+      });
     }
 );
 
