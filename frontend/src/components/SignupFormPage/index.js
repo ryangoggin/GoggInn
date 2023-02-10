@@ -22,6 +22,7 @@ function SignupFormPage() {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors([]);
+      console.log(errors);
       return dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
         .catch(async (res) => {
           const data = await res.json();
@@ -34,10 +35,11 @@ function SignupFormPage() {
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
+        <h1 className="form-text">Sign Up</h1>
         <ul>
           {errors.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
-        <label>
+        <label className="form-text">
           Email
           <input
             type="text"
@@ -46,7 +48,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        <label>
+        <label className="form-text">
           Username
           <input
             type="text"
@@ -55,7 +57,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        <label>
+        <label className="form-text">
           First Name
           <input
             type="text"
@@ -64,7 +66,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        <label>
+        <label className="form-text">
           Last Name
           <input
             type="text"
@@ -73,7 +75,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        <label>
+        <label className="form-text">
           Password
           <input
             type="password"
@@ -82,7 +84,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        <label>
+        <label className="form-text">
           Confirm Password
           <input
             type="password"
@@ -91,7 +93,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <button className="form-button form-text" type="submit">Sign Up</button>
       </form>
     </div>
   );

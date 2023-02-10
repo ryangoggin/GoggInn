@@ -1,1 +1,51 @@
 /* TODO Add site wide styles */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+.nav-text {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.menu-text {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.menu-button {
+    background-color: #FF5A5F;
+    margin-bottom: 40px;
+}
+
+.menu-button:hover {
+    background-color: #ff5a608a;
+}
+
+.form-button {
+    background-color: #FF5A5F;
+    margin-bottom: 40px;
+}
+
+.form-button:hover {
+    background-color: #ff5a608a;
+}
+
+.form-text {
+    font-family: 'Montserrat', sans-serif;
+}
+
+form label, form input {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    display: block;
+    text-align: center;
+}
+
+form {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    text-align: left;
+    border: solid black;
+}
