@@ -13,7 +13,7 @@ const setUser = (user) => {
     };
 };
 
-const removeUser = () => {
+export const removeUser = () => {
     return {
     type: REMOVE_USER
     };
@@ -31,7 +31,14 @@ export const login = ({credential, password}) => async dispatch => {
       dispatch(setUser(user));
       return res;
     }
-  };
+};
+
+export const restoreUser = () => async dispatch => {
+    const response = await csrfFetch('/api/session');
+    const data = await response.json();
+    dispatch(setUser(data.user));
+    return response;
+};
 
 const initialState = { user: null };
 
