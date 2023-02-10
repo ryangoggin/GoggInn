@@ -1,0 +1,19 @@
+.hidden {
+    display: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.nav-container {
+    padding: 10px 20px 10px;
+    border: solid 20px #FF5A5F;
+    background-color: #FF5A5F;
+}
