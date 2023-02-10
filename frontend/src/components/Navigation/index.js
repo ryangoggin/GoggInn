@@ -1,8 +1,10 @@
-// Phase 3: Frontend Authme
+// Phase 3: Frontend Authme --> Phase 4 Modal
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
+import OpenModalButton from '../OpenModalButton';
+import LoginFormModal from '../LoginFormModal';
 import './Navigation.css';
 
 function Navigation({ isLoaded }){
@@ -17,21 +19,20 @@ function Navigation({ isLoaded }){
     );
   } else {
     sessionLinks = (
-      <>
-        <li>
-            <NavLink to="/login" className={"nav-text"}>Log In</NavLink>
-        </li>
-        <li>
-            <NavLink to="/signup" className={"nav-text"}>Sign Up</NavLink>
-        </li>
-      </>
+      <li>
+        <OpenModalButton
+          buttonText="Log In"
+          modalComponent={<LoginFormModal />}
+        />
+        <NavLink to="/signup" className="nav-text">Sign Up</NavLink>
+      </li>
     );
   }
 
   return (
     <ul>
       <li>
-        <NavLink exact to="/" className={"nav-text"}>Home</NavLink>
+        <NavLink exact to="/" className="nav-text">Home</NavLink>
       </li>
       {isLoaded && sessionLinks}
     </ul>
