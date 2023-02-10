@@ -1,4 +1,4 @@
-// Phase 1: Frontend Authme
+// Phase 1: Frontend Authme --> Phase 4 Modal
 import React, { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
