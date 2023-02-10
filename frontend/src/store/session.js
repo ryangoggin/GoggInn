@@ -1,38 +1,42 @@
 import { csrfFetch } from "./csrf";
-// Frontend Auth Me Phase 1:
 
 // types:
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 
 // POJO action creators:
+// Phase 1: Frontend Authme
 const setUser = (user) => {
-    return {
-      type: SET_USER,
-      user
-    };
+  return {
+    type: SET_USER,
+    payload: user,
+  };
 };
 
-export const removeUser = () => {
-    return {
-    type: REMOVE_USER
-    };
+// Phase 1: Frontend Authme
+const removeUser = () => {
+  return {
+    type: REMOVE_USER,
+  };
 };
 
 // thunk action creators:
-export const login = ({credential, password}) => async dispatch => {
-    const res = await csrfFetch(`/api/session`, {
-      method: "POST",
-      body: JSON.stringify({credential, password})
-    });
-
-    if (res.ok) {
-      const user = await res.json();
-      dispatch(setUser(user));
-      return res;
-    }
+// Phase 1: Frontend Authme
+export const login = (user) => async (dispatch) => {
+  const { credential, password } = user;
+  const response = await csrfFetch('/api/session', {
+    method: 'POST',
+    body: JSON.stringify({
+      credential,
+      password,
+    }),
+  });
+  const data = await response.json();
+  dispatch(setUser(data.user));
+  return response;
 };
 
+// Phase 1: Frontend Authme
 export const restoreUser = () => async dispatch => {
     const response = await csrfFetch('/api/session');
     const data = await response.json();
@@ -40,17 +44,40 @@ export const restoreUser = () => async dispatch => {
     return response;
 };
 
+// Phase 2: Frontend Authme
+export const signup = (user) => async (dispatch) => {
+  const { username, firstName, lastName, email, password } = user;
+  const response = await csrfFetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify({
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+    }),
+  });
+  const data = await response.json();
+  dispatch(setUser(data.user));
+  return response;
+};
+
 const initialState = { user: null };
 
 const sessionReducer = (state = initialState, action) => {
-    switch(action.type) {
-      case SET_USER:
-        return { user: action.user };
-      case REMOVE_USER:
-        return { user: null };
-      default:
-        return state;
-    }
-}
+  let newState;
+  switch (action.type) {
+    case SET_USER:
+      newState = Object.assign({}, state);
+      newState.user = action.payload;
+      return newState;
+    case REMOVE_USER:
+      newState = Object.assign({}, state);
+      newState.user = null;
+      return newState;
+    default:
+      return state;
+  }
+};
 
 export default sessionReducer;

@@ -1,3 +1,4 @@
+// Phase 1: Frontend Authme
 import React, { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
