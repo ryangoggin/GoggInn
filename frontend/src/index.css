@@ -5,6 +5,18 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+.profile-button {
+    background-color: white;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.profile-dropdown > li {
+    font-family: 'Montserrat', sans-serif;
+    list-style: none;
+}
+
 .menu-text {
     font-family: 'Montserrat', sans-serif;
 }
