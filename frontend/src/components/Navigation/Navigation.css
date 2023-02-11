@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 .hidden {
     display: none;
 }
@@ -15,7 +17,6 @@ ul {
 .nav-container {
     width:100vw;
     padding-top: 10px;
-    background-color: white;
     border-bottom: solid gray;
 }
 
@@ -45,4 +46,25 @@ ul {
     height: 35px;
     width: 45px;
     border-radius: 45%;
+}
+
+.profile-button:hover {
+    cursor: pointer;
+}
+
+.logout-button {
+    color: white;
+    background-color: gray;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    height: 40px;
+    width: 65px;
+    border-radius: 40%;
+    margin-top: 5px;
+    margin-left: 40px;
+}
+
+.logout-button:hover {
+    background-color: rgba(128, 128, 128, 0.733);
+    cursor: pointer;
 }
