@@ -5,29 +5,21 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-.profile-button {
+.profile-dropdown {
+    display: grid;
+    position: absolute;
+    right: 20px;
     background-color: white;
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
+    border: solid black;
+    padding: 5px 15px 5px;
+    margin-right: 10px;
 }
 
 .profile-dropdown > li {
     font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
     list-style: none;
-}
-
-.menu-text {
-    font-family: 'Montserrat', sans-serif;
-}
-
-.menu-button {
-    background-color: #FF5A5F;
-    margin-bottom: 40px;
-}
-
-.menu-button:hover {
-    background-color: #ff5a608a;
+    margin-bottom: 5px;
 }
 
 .form-button {

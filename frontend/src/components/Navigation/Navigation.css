@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 .hidden {
     display: none;
 }
@@ -9,11 +11,60 @@ ul li {
 ul {
     display: flex;
     justify-content: space-between;
-
+    padding-inline-start: 20px;
 }
 
 .nav-container {
-    padding: 10px 20px 10px;
-    border: solid 20px #FF5A5F;
-    background-color: #FF5A5F;
+    width:100vw;
+    padding-top: 10px;
+    border-bottom: solid gray;
+}
+
+.icon-logo {
+    color: #FF5A5F;
+    font-size: 25px;
+}
+
+.gogginn-logo {
+    color: #FF5A5F;
+    font-weight: bold;
+    font-size: x-large;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.fa-bars {
+    margin-right: 5px;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    height: 35px;
+    width: 45px;
+    border-radius: 45%;
+}
+
+.profile-button:hover {
+    cursor: pointer;
+}
+
+.logout-button {
+    color: white;
+    background-color: gray;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    height: 40px;
+    width: 65px;
+    border-radius: 40%;
+    margin-top: 5px;
+    margin-left: 40px;
+}
+
+.logout-button:hover {
+    background-color: rgba(128, 128, 128, 0.733);
+    cursor: pointer;
 }

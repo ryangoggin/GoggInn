@@ -12,7 +12,8 @@ function Navigation({ isLoaded }){
     <div className='nav-container'>
         <ul>
         <li>
-            <NavLink exact to="/" className="nav-text">Home</NavLink>
+            <i class="fa-solid fa-mug-hot icon-logo"></i>
+            <NavLink exact to="/" className="nav-text gogginn-logo">GoggInn</NavLink>
         </li>
         {isLoaded && (
             <li>
