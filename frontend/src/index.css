@@ -1,14 +1,15 @@
 /* TODO Add site wide styles */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-.nav-text {
-    font-family: 'Montserrat', sans-serif;
+body {
+    overflow-x: hidden;
+    margin-left: 0;
 }
 
 .profile-dropdown {
     display: grid;
     position: absolute;
-    right: 20px;
+    right: 10px;
     background-color: white;
     border: solid black;
     padding: 5px 15px 5px;
@@ -24,11 +25,23 @@
 
 .form-button {
     background-color: #FF5A5F;
-    margin-bottom: 40px;
+    color: white;
+    display: block;
+    width: 335px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: none;
+    padding: 7px 10px 7px;
+    border-radius: 5px;
 }
 
 .form-button:hover {
     background-color: #ff5a608a;
+    cursor: pointer;
+}
+
+.form-header {
+    text-align: center;
 }
 
 .form-text {
@@ -40,6 +53,13 @@ form label, form input {
     margin-bottom: 20px;
 }
 
+/* potentially removing to remove 3D-type effect on form inputs */
+form input {
+    border-radius: 5px;
+    padding: 5px;
+    width: 321px;
+}
+
 .form-container {
     display: block;
     text-align: center;
@@ -49,7 +69,7 @@ form {
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
-    padding: 20px;
+    padding: 20px 40px 20px;
     text-align: left;
     border: solid black;
 }
