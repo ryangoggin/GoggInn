@@ -24,6 +24,11 @@ function SignupFormModal() {
         .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
+          //backend made data.errors an object, convert to an array of the object's values so they can be mapped
+          if (!Array.isArray(data.errors)) {
+            data.errors = Object.values(data.errors);
+          }
+          console.log("data: ", data);
           if (data && data.errors) setErrors(data.errors);
         });
     }
@@ -33,9 +38,9 @@ function SignupFormModal() {
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
-        <h1 className="form-text">Sign Up</h1>
+        <h1 className="form-text form-header">Sign Up</h1>
         <ul>
-          {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+          {errors.map((error, idx) => <li key={idx} className="errors">{error}</li>)}
         </ul>
         <label className="form-text">
           Email
@@ -91,7 +96,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        <button className="form-button form-text" type="submit">Sign Up</button>
+        <button className="form-button form-text" type="submit" disabled={email === "" || username === "" || firstName === "" || lastName === "" || password === "" || username.length < 4 || password.length < 6 || password !== confirmPassword}>Sign Up</button>
       </form>
     </div>
   );

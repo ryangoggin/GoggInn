@@ -25,13 +25,25 @@ function LoginFormModal() {
       );
   };
 
+  const loginDemo = (e) => {
+    e.preventDefault();
+    return dispatch(sessionActions.login({ "credential": "Demo-lition", "password": "password" }))
+      .then(closeModal)
+      .catch(
+        async (res) => {
+          const data = await res.json();
+          if (data && data.errors) setErrors(data.errors);
+        }
+      );
+  }
+
   return (
     <div className='form-container'>
         <form onSubmit={handleSubmit}>
-        <h1 className="form-text">Log In</h1>
+        <h1 className="form-text form-header">Log In</h1>
         <ul>
           {errors.map((error, idx) => (
-              <li key={idx}>{error}</li>
+              <li key={idx} className="errors">{error}</li>
             ))}
         </ul>
         <label className="form-text">
@@ -52,7 +64,8 @@ function LoginFormModal() {
             required
             />
         </label >
-        <button className="form-button form-text" type="submit">Log In</button>
+        <button className="form-button form-text" type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
+        <button className="form-button" onClick={loginDemo}>Log in as Demo User</button>
         </form>
     </div>
   );

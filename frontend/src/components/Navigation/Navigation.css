@@ -8,6 +8,14 @@ ul li {
     list-style: none;
 }
 
+.nav-text {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.profile-dropdown li:hover {
+    cursor: pointer;
+}
+
 ul {
     display: flex;
     justify-content: space-between;
@@ -35,6 +43,7 @@ ul {
 
 .fa-bars {
     margin-right: 5px;
+    margin-left: 5px;
 }
 
 .profile-button {
@@ -44,12 +53,16 @@ ul {
     margin-bottom: 20px;
     margin-right: 20px;
     height: 35px;
-    width: 45px;
-    border-radius: 45%;
+    width: 65px;
+    border-radius: 30px;
 }
 
 .profile-button:hover {
     cursor: pointer;
+}
+
+.profile-button i {
+    font-size: 20px;
 }
 
 .logout-button {
@@ -58,10 +71,10 @@ ul {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     height: 40px;
-    width: 65px;
-    border-radius: 40%;
+    width: 85px;
+    border-radius: 25px;
     margin-top: 5px;
-    margin-left: 40px;
+    margin-left: 30px;
 }
 
 .logout-button:hover {
