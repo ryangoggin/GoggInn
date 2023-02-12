@@ -24,6 +24,11 @@ module.exports = {
         spotId: 3,
         url: "https://static.wikia.nocookie.net/familyguyfanon/images/3/3c/The_Griffin_House.png/revision/latest?cb=20180405011745",
         preview: true
+      },
+      {
+        spotId: 4,
+        url: "https://upload.wikimedia.org/wikipedia/en/c/ca/742_Evergreen_Terrace.png",
+        preview: true
       }
     ], {});
   },

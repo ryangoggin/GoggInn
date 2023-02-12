@@ -1,0 +1,15 @@
+/* use media queries to change column numbers as screen size changes (max 4, min 1) */
+
+.all-spots-container {
+    max-width: 1200px;
+    padding: 20px 40px 20px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 600px) {
+    .all-spots-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

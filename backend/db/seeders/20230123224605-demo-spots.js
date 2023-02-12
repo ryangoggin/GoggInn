@@ -44,7 +44,19 @@ module.exports = {
         lng: -71.4774327,
         name: "Griffin House",
         description: "Place where Peetah Griffin lives",
-        price: 50.50
+        price: 150.50
+      },
+      {
+        ownerId: 1,
+        address: "743 Evergreen Terrace",
+        city: "Springfield",
+        state: 'Rhode Island',
+        country: "United States of America",
+        lat: 39.7817358,
+        lng: -89.6501327,
+        name: "Simpsons House",
+        description: "Place where The Simpsons live",
+        price: 160.75
       }
     ], {});
   },
