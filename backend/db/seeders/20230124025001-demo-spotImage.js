@@ -16,6 +16,26 @@ module.exports = {
         preview: true
       },
       {
+        spotId: 1,
+        url: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Appacademylogo.png",
+        preview: false
+      },
+      {
+        spotId: 1,
+        url: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Appacademylogo.png",
+        preview: false
+      },
+      {
+        spotId: 1,
+        url: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Appacademylogo.png",
+        preview: false
+      },
+      {
+        spotId: 1,
+        url: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Appacademylogo.png",
+        preview: false
+      },
+      {
         spotId: 2,
         url: "https://static.wikia.nocookie.net/spongebob/images/7/7c/SpongeBobHouseStock.png",
         preview: true
