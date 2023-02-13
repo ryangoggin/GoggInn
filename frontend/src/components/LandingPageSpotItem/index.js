@@ -10,7 +10,7 @@ const LandingPageSpotItem = ({ spot }) => {
             <p>{spot.city}, {spot.state}</p>
             <p>
                 <i class="fa-sharp fa-solid fa-star"></i>
-                {!isNaN(spot.avgRating) ? spot.avgRating : "No Reviews Yet"}
+                {!isNaN(spot.avgRating) ? spot.avgRating : "New"}
             </p>
         </div>
         <div className='spot-price'>

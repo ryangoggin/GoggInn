@@ -57,6 +57,30 @@ module.exports = {
         name: "Simpsons House",
         description: "Place where The Simpsons live",
         price: 160.75
+      },
+      {
+        ownerId: 2,
+        address: "Park AV 300",
+        city: "East Pines",
+        state: 'Colorado',
+        country: "United States of America",
+        lat: 39.5501123,
+        lng: -105.7821392,
+        name: "The Park",
+        description: "Place where Mordecai and Rigby live",
+        price: 183.83
+      },
+      {
+        ownerId: 3,
+        address: "West 57th Street",
+        city: "Manhattan",
+        state: 'New New York',
+        country: "United States of America",
+        lat: 40.7831752,
+        lng: -73.9712058,
+        name: "Planet Express",
+        description: "Headquarters of Planet Express",
+        price: 295.60
       }
     ], {});
   },
