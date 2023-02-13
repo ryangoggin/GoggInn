@@ -10,11 +10,11 @@ const LandingPageSpotItem = ({ spot }) => {
             <p>{spot.city}, {spot.state}</p>
             <p>
                 <i className="fa-sharp fa-solid fa-star"></i>
-                {!isNaN(spot.avgRating) ? spot.avgRating : "New"}
+                {!isNaN(spot.avgRating) ? <b>{spot.avgRating}</b> : <b>New</b>}
             </p>
         </div>
         <div className='spot-price'>
-            <p>${spot.price}/night</p>
+            <p><b>${Number.parseFloat(spot.price).toFixed(2)}</b>/night</p>
         </div>
     </>
   );

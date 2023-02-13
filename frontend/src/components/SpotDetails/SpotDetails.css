@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+h1, h2, h3, p {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.hidden {
+    display: none;
+}
+
+.spot-details-header {
+    margin: 0px 40px 0px;
+}
+
+.spot-details-image-container {
+    margin: 0 auto;
+    padding: 0px 40px 0px;
+    display: grid;
+    gap: 2px;
+    grid-template-columns: repeat(2, 50%);
+}
+
+.big-image {
+    width: 100%;
+    height: 412px;
+}
+
+.small-images-container {
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    gap: 2px;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: repeat(2, 206px);
+}
+
+.small-image {
+    width: 100%;
+    height: 205px;
+}
+
+.big-image-only-sub-container {
+    display: flex;
+    justify-content: center;
+}
+
+.big-image-only {
+    width: 50%;
+}
+
+.spot-info-container {
+    margin: 0 auto;
+    padding: 0px 40px 0px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 66% 33%;
+}
+
+.callout-info-box {
+    border: solid black;
+    border-radius: 5px;
+    padding: 10px 20px 10px;
+    margin-top: 20px;
+}
+
+.top-callout-info-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reserve-button {
+    background-color: #FF5A5F;
+    color: white;
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: none;
+    padding: 7px 10px 7px;
+    border-radius: 5px;
+    box-shadow: 3px 3px black;
+}
+
+.reserve-button:hover {
+    background-color: #ff5a608a;
+    cursor: pointer;
+}
