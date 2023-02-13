@@ -1,0 +1,33 @@
+/* use media queries to change column numbers as screen size changes (max 4, min 1) */
+
+.all-spots-container {
+    max-width: 1200px;
+    padding: 20px 40px 20px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 1200px) {
+    .all-spots-container {
+        grid-template-columns: repeat(4, 270px);
+    }
+}
+
+@media (max-width: 1199px) {
+    .all-spots-container {
+        grid-template-columns: repeat(3, 270px);
+    }
+}
+
+@media (max-width: 919px) {
+    .all-spots-container {
+        grid-template-columns: repeat(2, 270px);
+    }
+}
+
+@media (max-width: 649px) {
+    .all-spots-container {
+        grid-template-columns: repeat(1, 270px);
+    }
+}

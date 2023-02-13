@@ -1,0 +1,16 @@
+.spot-image {
+    width: 270px;
+    height: 250px;
+    object-fit: cover;
+    object-position: bottom;
+}
+
+.spot-loc-rating {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.spot-price {
+
+}

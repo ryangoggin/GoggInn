@@ -17,12 +17,27 @@ module.exports = {
       },
       {
         spotId: 2,
-        url: "https://static.wikia.nocookie.net/spongebob/images/7/7c/SpongeBobHouseStock.png/revision/latest?cb=20221031053603",
+        url: "https://static.wikia.nocookie.net/spongebob/images/7/7c/SpongeBobHouseStock.png",
         preview: true
       },
       {
         spotId: 3,
-        url: "https://static.wikia.nocookie.net/familyguyfanon/images/3/3c/The_Griffin_House.png/revision/latest?cb=20180405011745",
+        url: "https://i.pinimg.com/736x/a4/a1/0f/a4a10f79883bb2ea50222e75adcef03d--house-styles-sweet-home.jpg",
+        preview: true
+      },
+      {
+        spotId: 4,
+        url: "https://upload.wikimedia.org/wikipedia/en/c/ca/742_Evergreen_Terrace.png",
+        preview: true
+      },
+      {
+        spotId: 5,
+        url: "https://static.wikia.nocookie.net/regularshowfanon/images/6/6f/The_Park.jpg",
+        preview: true
+      },
+      {
+        spotId: 6,
+        url: "https://static.wikia.nocookie.net/enfuturama/images/0/0e/The_Luck_of_the_Fryrish_%28Main_Episode%29_-_319.png",
         preview: true
       }
     ], {});
