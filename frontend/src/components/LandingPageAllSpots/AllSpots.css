@@ -5,28 +5,28 @@
     padding: 20px 40px 20px;
     margin: 0 auto;
     display: grid;
-    gap: 1rem;
+    gap: 2rem;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1260px) {
     .all-spots-container {
         grid-template-columns: repeat(4, 270px);
     }
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1259px) {
     .all-spots-container {
         grid-template-columns: repeat(3, 270px);
     }
 }
 
-@media (max-width: 919px) {
+@media (max-width: 969px) {
     .all-spots-container {
         grid-template-columns: repeat(2, 270px);
     }
 }
 
-@media (max-width: 649px) {
+@media (max-width: 669px) {
     .all-spots-container {
         grid-template-columns: repeat(1, 270px);
     }
