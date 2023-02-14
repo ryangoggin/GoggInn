@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+.form-header {
+    margin-bottom: 10px;
+}
+
+.create-spot-container {
+    display: block;
+    text-align: center;
+}
+
+.create-spot-form {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 40px 20px;
+    text-align: left;
+}
+
+.create-spot-form label, .create-spot-form input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.create-spot-form input, .description {
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+input::placeholder, textarea::placeholder {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.section-header, .section-description {
+    margin: 0;
+}
+
+.section-header {
+    padding: 15px 0px 5px;
+}
+
+.section-description {
+    padding: 0px 0px 10px;
+}
+
+.first-section {
+    border-bottom: solid gray;
+    padding-bottom: 10px;
+}
+
+.second-section, .third-section, .fourth-section, .fifth-section {
+    border-bottom: solid gray;
+    padding-bottom: 30px;
+}
+
+.city-state {
+    display: grid;
+    grid-template-columns: 63% 2% 35%;
+}
+
+.city input {
+    width: 94%;
+}
+
+.lat-long {
+    display: grid;
+    grid-template-columns: 49% 2% 49%;
+}
+
+.lat {
+    width: 98%;
+}
+
+.comma {
+    position: relative;
+    top: 17px;
+    font-weight: bold;
+}
+
+.description {
+    border: groove gray;
+    box-sizing: border-box;
+    width: 500px;
+    height: 150px;
+}
+
+.third-section input {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.pricing-input {
+    display: flex;
+}
+
+.dollar-sign {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    top: 7px;
+    margin-right: 5px;
+}
+
+.pricing-input input {
+    width: 100%
+}
+
+.fifth-section input {
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.create-spot-button-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.create-spot-button {
+    background-color: #FF5A5F;
+    color: white;
+    width: 110px;
+    margin-bottom: 15px;
+    border: none;
+    padding: 7px 10px 7px;
+    border: solid 2px black;
+    border-radius: 5px;
+    box-shadow: 3px 3px black;
+}
+
+.create-spot-button:hover {
+    background-color: #ff5a608a;
+    cursor: pointer;
+}

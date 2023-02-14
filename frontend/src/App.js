@@ -5,6 +5,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPageAllSpots from "./components/LandingPageAllSpots";
 import SpotDetails from "./components/SpotDetails";
+import CreateSpotForm from "./components/CreateSpot";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path="/" component={LandingPageAllSpots} />
+          <Route path="/spots/new" component={CreateSpotForm} />
           <Route path="/spots/:spotId" component={SpotDetails} />
           <Route>
             <p>Page Not Found</p>
