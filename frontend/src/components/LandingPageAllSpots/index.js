@@ -32,7 +32,7 @@ function LandingPageAllSpots(){
           return (
             <div key={spot.id} className='spot-item-container'>
                 <div className='spot-item'>
-                    <Link key={spot.id} to={`/spots/${spot.id}`}>
+                    <Link key={spot.id} to={`/spots/${spot.id}`} style={{ textDecoration: 'none' }}>
                         <LandingPageSpotItem spot={spot}/>
                     </Link>
                 </div>

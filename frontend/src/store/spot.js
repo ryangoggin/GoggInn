@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_SPOTS = 'spot/LOAD_SPOTS';
 const LOAD_SINGLE_SPOT = 'spot/LOAD_SINGLE_SPOT';
 const ADD_SPOT = 'spot/ADD_SPOT';
+const ADD_SPOT_IMAGES = 'spots/ADD_SPOT_IMAGES';
 
 // POJO action creators:
 // Feature 1: Landing Page All Spots
@@ -24,6 +25,15 @@ const addSpot = spot => ({
     spot
 });
 
+// Feature 3: Add Spot Images to Spot
+const addSpotImages = (spot, spotImages) => ({
+    type: ADD_SPOT_IMAGES,
+    payload: {
+      spot,
+      spotImages
+    }
+});
+
 // thunk action creators:
 // Feature 1: Landing Page All Spots
 export const getAllSpots = () => async dispatch => {
@@ -37,7 +47,7 @@ export const getAllSpots = () => async dispatch => {
 
 // Feature 2: Spot Details
 export const getSpotDetail = (id) => async dispatch => {
-  const res = await fetch(`/api/spots/${id}`);
+  const res = await csrfFetch(`/api/spots/${id}`);
 
   if (res.ok) {
     const spot = await res.json();
@@ -46,16 +56,41 @@ export const getSpotDetail = (id) => async dispatch => {
 };
 
 // Feature 3: Create a Spot
-export const createSpot = (spot) => async dispatch => {
-  const res = await fetch(`/api/spots`, {
+export const createSpot = (spot, spotImages) => async dispatch => {
+  //keep spot.Owner for after DB strips it off:
+  const spotOwner = spot.Owner;
+  const resSpot = await csrfFetch(`/api/spots`, {
     method: "POST",
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(spot)
   });
 
-  if (res.ok) {
-    const spot = await res.json();
+  if (resSpot.ok) {
+    const spot = await resSpot.json();
+    console.log("inside thunk spot: ", spot);
     dispatch(addSpot(spot));
+
+    const spotImagesArr = [];
+
+    // POST to /api/spots/:spotId/images only takes one spotImage at a time
+    for (let spotImage of spotImages) {
+      const resImage = await csrfFetch(`/api/spots/${spot.id}/images`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(spotImage)
+      });
+
+      if (resImage.ok) {
+        const spotImage = await resImage.json();
+        spotImagesArr.push(spotImage);
+      }
+    }
+
+    // DB strips Owner from spot... readd here
+    spot.Owner = spotOwner;
+
+    dispatch(addSpotImages(spot, spotImagesArr));
+    return spot; //return so can be accessed for rerouting
   }
 };
 
@@ -84,9 +119,16 @@ const spotReducer = (state = initialState, action) => {
     case ADD_SPOT:
         return {
           ...state,
-          allSpots: {
-            ...state.allSpots,
-            [action.spot.id]: action.spot
+          singleSpot: {
+            ...action.spot
+          }
+        }
+    case ADD_SPOT_IMAGES:
+        return {
+          ...state,
+          singleSpot: {
+              ...action.payload.spot,
+              SpotImages: action.payload.spotImages
           }
         }
     default:
