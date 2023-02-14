@@ -11,15 +11,26 @@ function Navigation({ isLoaded }){
   return (
     <div className='nav-container'>
         <ul>
-        <li>
-            <i className="fa-solid fa-mug-hot icon-logo"></i>
-            <NavLink exact to="/" className="nav-text gogginn-logo">GoggInn</NavLink>
-        </li>
-        {isLoaded && (
-            <li>
-            <ProfileButton user={sessionUser} />
+          <li>
+            <NavLink exact to="/" className="nav-text gogginn-logo">
+              <i className="fa-solid fa-mug-hot icon-logo"></i>
+              GoggInn
+            </NavLink>
+          </li>
+          <ul className='right-nav'>
+          { sessionUser !== null && (
+            <li className="create-new-spot">
+            <NavLink exact to="/spots/new" className="create-new-spot nav-text">
+              Create a New Spot
+            </NavLink>
             </li>
-        )}
+          )}
+          {isLoaded && (
+              <li>
+              <ProfileButton user={sessionUser} />
+              </li>
+          )}
+          </ul>
         </ul>
     </div>
   );

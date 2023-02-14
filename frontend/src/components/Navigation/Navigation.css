@@ -25,8 +25,11 @@ ul {
 
 .nav-container {
     width:100vw;
+    position: sticky;
+    top: 0;
     padding-top: 10px;
     border-bottom: solid gray;
+    background-color: white;
 }
 
 .icon-logo {
@@ -39,7 +42,10 @@ ul {
     font-weight: bold;
     font-size: x-large;
     text-decoration: none;
-    margin-left: 5px;
+}
+
+.fa-mug-hot {
+    margin-right: 5px;
 }
 
 .fa-bars {
@@ -81,4 +87,15 @@ ul {
 .logout-button:hover {
     background-color: rgba(128, 128, 128, 0.733);
     cursor: pointer;
+}
+
+.create-new-spot {
+    text-decoration: none;
+    color: navy;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.right-nav {
+    display: flex;
 }
