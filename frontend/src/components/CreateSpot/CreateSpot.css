@@ -4,6 +4,22 @@
     margin-bottom: 10px;
 }
 
+.hidden {
+    visibility: none;
+}
+
+.error {
+    font-family: 'Montserrat', sans-serif;
+    color: red;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.previewImageError {
+    display: flex;
+    flex-direction: column;
+}
+
 .create-spot-container {
     display: block;
     text-align: center;
@@ -17,10 +33,21 @@
     text-align: left;
 }
 
-.create-spot-form label, .create-spot-form input {
+.create-spot-form input {
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
+}
+
+.first-section input {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.first-section label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .create-spot-form input, .description {
@@ -60,16 +87,12 @@ input::placeholder, textarea::placeholder {
     grid-template-columns: 63% 2% 35%;
 }
 
-.city input {
-    width: 94%;
-}
-
 .lat-long {
     display: grid;
     grid-template-columns: 49% 2% 49%;
 }
 
-.lat {
+.city input, .lat input {
     width: 98%;
 }
 
@@ -111,7 +134,7 @@ input::placeholder, textarea::placeholder {
 .fifth-section input {
     box-sizing: border-box;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .create-spot-button-container {

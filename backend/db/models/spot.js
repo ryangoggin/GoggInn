@@ -89,7 +89,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [4, 56], //shortest country names are 4 letters, longest country name is 56 letters long
+        len: [3, 56], //shortest country names are 3 letters, longest country name is 56 letters long
         noNums(value) {
           for (let i = 0; i < value.length; i++) {
             if (Number.isInteger(value[i])) {

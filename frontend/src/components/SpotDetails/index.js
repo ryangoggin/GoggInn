@@ -24,6 +24,8 @@ const SpotDetails = () => {
   let bigSpotImage;
   if (spot) {
     for (let i = 0; i < 5; i++) {
+      console.log("spot: ", spot);
+      console.log("spot.SpotImages", spot.SpotImages);
       if (spot.SpotImages[i]) {
         (spot.SpotImages[i].preview && !bigSpotImage) ? bigSpotImage = spot.SpotImages[i] : smallSpotImages.push(spot.SpotImages[i]);
       }
@@ -61,20 +63,7 @@ const SpotDetails = () => {
     <div className='spot-info-container'>
           <div className='left-side-info'>
           <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
-          <p>
-            This is where information and details about this spot go!
-            This is where information and details about this spot go!
-            This is where information and details about this spot go!
-            This is where information and details about this spot go!
-            This is where information and details about this spot go!
-          </p>
-          <p>
-            Put more info here in another paragraph if you need!
-            Put more info here in another paragraph if you need!
-            Put more info here in another paragraph if you need!
-            Put more info here in another paragraph if you need!
-            Put more info here in another paragraph if you need!
-          </p>
+          <p>{spot.description}</p>
           </div>
           <div className='callout-info-box-container'>
             <div className='callout-info-box'>
