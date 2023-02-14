@@ -63,27 +63,27 @@ function CreateSpotForm() {
       if (previewUrl === "") {
         errors.previewUrl = "Preview image is required";
       }
-      if (!previewUrl.endsWith(".png") || !previewUrl.endsWith(".jpg") || !previewUrl.endsWith(".jpeg")) {
+      if (!(previewUrl.endsWith(".png") || previewUrl.endsWith(".jpg") || previewUrl.endsWith(".jpeg"))) {
         errors.previewUrlEnd = "Image URL must end in .png, .jpg, or .jpeg";
       }
       // additional images are optional, check they've been filled in before validating
       if (image2Url) {
-        if (!image2Url.endsWith(".png") || !image2Url.endsWith(".jpg") || !image2Url.endsWith(".jpeg")) {
+        if (!(image2Url.endsWith(".png") || image2Url.endsWith(".jpg") || image2Url.endsWith(".jpeg"))) {
           errors.image2Url = "Image URL must end in .png, .jpg, or .jpeg";
         }
       };
       if (image3Url) {
-        if (!image3Url.endsWith(".png") || !image3Url.endsWith(".jpg") || !image3Url.endsWith(".jpeg")) {
+        if (!(image3Url.endsWith(".png") || image3Url.endsWith(".jpg") || image3Url.endsWith(".jpeg"))) {
           errors.image3Url = "Image URL must end in .png, .jpg, or .jpeg";
         }
       };
       if (image4Url) {
-        if (!image4Url.endsWith(".png") || !image4Url.endsWith(".jpg") || !image4Url.endsWith(".jpeg")) {
+        if (!(image4Url.endsWith(".png") || image4Url.endsWith(".jpg") || image4Url.endsWith(".jpeg"))) {
           errors.image4Url = "Image URL must end in .png, .jpg, or .jpeg";
         }
       };
       if (image5Url) {
-        if (!image5Url.endsWith(".png") || !image5Url.endsWith(".jpg") || !image5Url.endsWith(".jpeg")) {
+        if (!(image5Url.endsWith(".png") || image5Url.endsWith(".jpg") || image5Url.endsWith(".jpeg"))) {
           errors.image5Url = "Image URL must end in .png, .jpg, or .jpeg";
         }
       };
