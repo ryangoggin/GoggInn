@@ -5,6 +5,7 @@ const LOAD_SPOTS = 'spot/LOAD_SPOTS';
 const LOAD_SINGLE_SPOT = 'spot/LOAD_SINGLE_SPOT';
 const ADD_SPOT = 'spot/ADD_SPOT';
 const ADD_SPOT_IMAGES = 'spots/ADD_SPOT_IMAGES';
+const LOAD_USER_SPOTS = 'spots/GET_USER_SPOTS';
 
 // POJO action creators:
 // Feature 1: Landing Page All Spots
@@ -33,6 +34,12 @@ const addSpotImages = (spot, spotImages) => ({
       spotImages
     }
 });
+
+// Feature 4: Manage Spots (Get Current User's Spots)
+const loadUserSpots = (userSpots) => ({
+  type: LOAD_USER_SPOTS,
+  userSpots
+})
 
 // thunk action creators:
 // Feature 1: Landing Page All Spots
@@ -94,7 +101,18 @@ export const createSpot = (spot, spotImages) => async dispatch => {
   }
 };
 
-const initialState = { allSpots: null, singleSpot: null };
+// Feature 4: Manage Spots (Get Current User's Spots)
+export const getUserSpots = () => async dispatch => {
+  const response = await csrfFetch(`/api/spots/current`);
+
+  if (response.ok) {
+    const userSpots = await response.json();
+    dispatch(loadUserSpots(userSpots));
+  }
+};
+
+
+const initialState = { allSpots: null, singleSpot: null, userSpots: null };
 
 // can add sortList function to sort spots --> refer to pokedex
 
@@ -115,14 +133,14 @@ const spotReducer = (state = initialState, action) => {
         return {
           ...state,
           singleSpot: singleSpot
-        }
+        };
     case ADD_SPOT:
         return {
           ...state,
           singleSpot: {
             ...action.spot
           }
-        }
+        };
     case ADD_SPOT_IMAGES:
         return {
           ...state,
@@ -130,7 +148,17 @@ const spotReducer = (state = initialState, action) => {
               ...action.payload.spot,
               SpotImages: action.payload.spotImages
           }
-        }
+        };
+      case LOAD_USER_SPOTS:
+        const userSpots = {};
+        const userSpotsArr = action.userSpots.Spots;
+        userSpotsArr.forEach(spot => {
+          userSpots[spot.id] = spot;
+        });
+          return {
+            ...state,
+            userSpots: userSpots
+          };
     default:
       return state;
   }

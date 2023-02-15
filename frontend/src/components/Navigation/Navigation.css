@@ -16,6 +16,10 @@ ul li {
     cursor: pointer;
 }
 
+li.no-hover:hover {
+    cursor: default;
+}
+
 ul {
     display: flex;
     justify-content: space-between;
@@ -72,6 +76,20 @@ ul {
     font-size: 20px;
 }
 
+.manage-spots-container {
+    padding: 5px 0px 5px;
+    margin-bottom: 5px;
+    border-top: solid gray;
+    border-bottom: solid gray;
+}
+
+.manage-spots {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
 .logout-button {
     color: white;
     background-color: gray;
@@ -91,7 +109,8 @@ ul {
 
 .create-new-spot {
     text-decoration: none;
-    color: navy;
+    font-weight: bold;
+    color: black;
     margin-top: 10px;
     margin-right: 10px;
 }
