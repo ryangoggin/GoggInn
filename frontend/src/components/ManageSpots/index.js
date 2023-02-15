@@ -2,8 +2,9 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { useEffect } from 'react';
-import { getUserSpots } from '../../store/spot';
+import { getUserSpots, clearSingleSpot } from '../../store/spot';
 import ManageSpotsItem from '../ManageSpotsItem';
 import './ManageSpots.css';
 
@@ -17,11 +18,20 @@ function ManageSpots() {
     }
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     //populate store with allSpots on render
     useEffect(() => {
         dispatch(getUserSpots());
+        return () => {
+            dispatch(clearSingleSpot());
+        }
     }, [dispatch]);
+
+    const sessionUser = useSelector(state => state.session.user);
+
+    // redirect to / if no user logged in
+    if (sessionUser === null) history.push(`/`);
 
     if (!userSpotsArr) {
         return null;
@@ -49,7 +59,9 @@ function ManageSpots() {
                                 </Link>
                                 <div className='update-delete-container'>
                                 <button className='update-delete-button'>
-                                    Update
+                                    <Link exact="true" to={`/spots/${spot.id}/edit`} className="update-spot">
+                                        Update
+                                    </Link>
                                 </button>
                                 <button className='update-delete-button'>
                                     Delete

@@ -30,11 +30,24 @@ function CreateSpotForm() {
     // redirect to / if no user logged in
     if (sessionUser === null) history.push(`/`);
 
+    // should be done using .catch on the dispatch, need to rework backend error handling
     useEffect(() => {
       const errors = {};
 
+      if (country.length < 3 || country.length > 56) {
+        errors.country = "Country must be between 3 and 56 characters";
+      }
       if (country === "") {
         errors.country = "Country is required";
+      }
+      let countryNum = country.match(/\d+/g);
+      if (countryNum != null) {
+        errors.country = "Country cannot have a number in it";
+      }
+      let addressArr = address.split(" ");
+      let addressNum = parseInt(addressArr[0]);
+      if (Number.isNaN(addressNum)) {
+        errors.address = "Address must start with a number";
       }
       if (address === "") {
         errors.address = "Address is required";
@@ -42,20 +55,40 @@ function CreateSpotForm() {
       if (city === "") {
         errors.city = "City is required";
       }
+      let cityNum = city.match(/\d+/g);
+      if (cityNum != null) {
+        errors.city = "City cannot have a number in it";
+      }
+      if (city.length > 105) {
+        errors.city = "City cannot exceed 105 characters";
+      }
       if (state === "") {
         errors.state = "State is required";
       }
-      if (lat === "") {
-        errors.lat = "Latitude is required";
+      let stateNum = state.match(/\d+/g);
+      if (stateNum != null) {
+        errors.state = "State cannot have a number in it";
       }
-      if (lng === "") {
-        errors.lng = "Longitude is required";
+      if (state.length > 105) {
+        errors.state = "State cannot exceed 105 characters";
       }
       if (description.length < 30) {
         errors.description = "Description needs a minimum of 30 characters";
       }
+      if (description.length > 500) {
+        errors.description = "Description cannot exceed 500 characters";
+      }
       if (name === "") {
         errors.name = "Name is required";
+      }
+      if (name.length > 32) {
+        errors.name = "Name cannot exceed 32 characters";
+      }
+      if (isNaN(Number.parseFloat(price))) {
+        errors.price = "Price needs to be in USD format";
+      }
+      if (Number.parseFloat(price).toFixed(2).toString() !== price) {
+        errors.price = "Price needs to be in USD format";
       }
       if (price === "") {
         errors.price = "Price is required";
@@ -97,6 +130,10 @@ function CreateSpotForm() {
       // track if submit has been pressed for error showing
       setHasSubmitted(true);
 
+      //hard code lat/lng for now, eventaully can have a geo spot API to get lat/lng based on input address
+      setLat(12.3456789);
+      setLng(12.3456789);
+
       const newSpot = {
         country,
         address,
@@ -115,55 +152,19 @@ function CreateSpotForm() {
       }
 
       const spotImages = [{url: previewUrl, preview: true}];
-      if (image2Url) {
-        spotImages.push({url: image2Url, preview: false});
-        if (!image2Url.endsWith(".png") || !image2Url.endsWith(".jpg") || !image2Url.endsWith(".jpeg")) {
-          let updatedValue = {"image2Url": "Image URL must end in .png, .jpg, or .jpeg"};
-          setErrors(errors => ({
-            ...errors,
-            ...updatedValue
-          }));
-        }
-      };
-      if (image3Url) {
-        spotImages.push({url: image3Url, preview: false});
-        if (!image3Url.endsWith(".png") || !image3Url.endsWith(".jpg") || !image3Url.endsWith(".jpeg")) {
-          let updatedValue = {"image3Url": "Image URL must end in .png, .jpg, or .jpeg"};
-          setErrors(errors => ({
-            ...errors,
-            ...updatedValue
-          }));
-        }
-      };
-      if (image4Url) {
-        spotImages.push({url: image4Url, preview: false});
-        if (!image4Url.endsWith(".png") || !image4Url.endsWith(".jpg") || !image4Url.endsWith(".jpeg")) {
-          let updatedValue = {"image4Url": "Image URL must end in .png, .jpg, or .jpeg"};
-          setErrors(errors => ({
-            ...errors,
-            ...updatedValue
-          }));
-        }
-      };
-      if (image5Url) {
-        spotImages.push({url: image5Url, preview: false});
-        if (!image5Url.endsWith(".png") || !image5Url.endsWith(".jpg") || !image5Url.endsWith(".jpeg")) {
-          let updatedValue = {"image5Url": "Image URL must end in .png, .jpg, or .jpeg"};
-          setErrors(errors => ({
-            ...errors,
-            ...updatedValue
-          }));
-        }
-      };
+      if (image2Url) spotImages.push({url: image2Url, preview: false});
+      if (image3Url) spotImages.push({url: image3Url, preview: false});
+      if (image4Url) spotImages.push({url: image4Url, preview: false});
+      if (image5Url) spotImages.push({url: image5Url, preview: false});
 
       // do not dispatch anything if there are errors
       if (Object.keys(errors).length > 0) {
         window.alert("Fix errors before creating spot!");
-        console.log(errors);
         return
       };
 
       if (newSpot) {
+        // use same .catch format from login/signup modals to directly grab errors from backend if time (backend needs rework to make errors and object and not setting one error at a time if doing this)
         const newSpotWithId = await dispatch(createSpot(newSpot, spotImages));
 
         setHasSubmitted(false);
@@ -239,31 +240,6 @@ function CreateSpotForm() {
                       placeholder="State"
                       value={state}
                       onChange={(e) => setState(e.target.value)}
-                      />
-                </div>
-            </div>
-            <div className="lat-long">
-                <div className="lat">
-                  <label className="form-text">
-                      Latitude {<span className={hasSubmitted ? "error" : "hidden"}>{errors.lat}</span>}
-                  </label>
-                      <input
-                      type="text"
-                      placeholder="Latitude"
-                      value={lat}
-                      onChange={(e) => setLat(e.target.value)}
-                      />
-                </div>
-                <p className="comma">,</p>
-                <div className="lng">
-                  <label className="form-text">
-                      Longitude {<span className={hasSubmitted ? "error" : "hidden"}>{errors.lng}</span>}
-                  </label>
-                      <input
-                      type="text"
-                      placeholder="Longitude"
-                      value={lng}
-                      onChange={(e) => setLng(e.target.value)}
                       />
                 </div>
             </div>

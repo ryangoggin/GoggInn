@@ -27,7 +27,7 @@
 
 .update-delete-button {
     margin-left: 5px;
-    background-color: darkgray;
+    background-color: rgb(110, 110, 110);
     margin-bottom: 15px;
     border: solid 2px black;
     border-radius: 5px;
@@ -40,6 +40,6 @@
 }
 
 .update-delete-button:hover {
-    background-color: rgba(169, 169, 169, 0.65);
+    background-color: rgba(110, 110, 110, 0.65);
     cursor: pointer;
 }
