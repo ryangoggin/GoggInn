@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+.manage-spots-header {
+    margin-left: 40px;
+    margin-bottom: 5px;
+}
+
+.create-new-spot-button {
+    margin-left: 40px;
+    background-color: darkgray;
+    margin-bottom: 15px;
+    border: none;
+    padding: 7px 10px 7px;
+    border: solid 2px black;
+    border-radius: 5px;
+    box-shadow: 3px 3px black;
+}
+
+.create-new-spot-button a {
+    color: white;
+    margin-right: 0;
+}
+
+.create-new-spot-button:hover {
+    background-color: rgba(169, 169, 169, 0.65);
+    cursor: pointer;
+}
+
+.user-spots-container {
+    max-width: 1200px;
+    padding: 20px 40px 20px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+}
+
+@media (min-width: 1260px) {
+    .user-spots-container {
+        grid-template-columns: repeat(4, 270px);
+    }
+}
+
+@media (max-width: 1259px) {
+    .user-spots-container {
+        grid-template-columns: repeat(3, 270px);
+    }
+}
+
+@media (max-width: 969px) {
+    .user-spots-container {
+        grid-template-columns: repeat(2, 270px);
+    }
+}
+
+@media (max-width: 669px) {
+    .user-spots-container {
+        grid-template-columns: repeat(1, 270px);
+    }
+}

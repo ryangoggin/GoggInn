@@ -50,7 +50,7 @@ module.exports = {
         ownerId: 1,
         address: "743 Evergreen Terrace",
         city: "Springfield",
-        state: 'Rhode Island',
+        state: 'Illinois',
         country: "United States of America",
         lat: 39.7817358,
         lng: -89.6501327,
