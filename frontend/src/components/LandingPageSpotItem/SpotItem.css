@@ -7,12 +7,12 @@
     object-position: bottom;
 }
 
-.spot-loc-rating {
+.spot-name-rating {
     display: flex;
     justify-content: space-between;
 }
 
-.spot-loc-rating p {
+.spot-name-rating p {
     color: black;
     font-size: 15px;
     padding: 10px 0px 10px;

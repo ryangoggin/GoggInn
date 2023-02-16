@@ -48,12 +48,12 @@ const SpotDetails = () => {
     </div>
     <div className={(smallSpotImages.length > 0) ? 'spot-details-image-container': 'big-image-only-container'}>
       <div className={(smallSpotImages.length > 0) ? 'big-image-container' : 'big-image-only-sub-container'}>
-        <img key={bigSpotImage.id} className={(smallSpotImages.length > 0) ? 'big-image' : 'big-image-only'} src={bigSpotImage.url} alt={`spotImage #${bigSpotImage.id}`} />
+        <img key={`spotImageId${bigSpotImage.id}`} className={(smallSpotImages.length > 0) ? 'big-image' : 'big-image-only'} src={bigSpotImage.url} alt={`spotImage #${bigSpotImage.id}`} />
       </div>
       <div className={(smallSpotImages.length > 0) ? 'small-images-container' : 'hidden'}>
         {smallSpotImages.map((spotImage) => {
             return (
-              <img key={spotImage.id} className='small-image' src={spotImage.url} alt={`spotImage #${spotImage.id}`} />
+              <img key={`spotImageId${spotImage.id}`} className='small-image' src={spotImage.url} alt={`spotImage #${spotImage.id}`} />
             );
           })}
       </div>

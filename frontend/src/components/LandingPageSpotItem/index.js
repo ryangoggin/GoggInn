@@ -6,8 +6,8 @@ const LandingPageSpotItem = ({ spot }) => {
   return (
     <>
         <img className='spot-image' src={`${spot.previewImage}`} alt={`${spot.name}`} />
-        <div className='spot-loc-rating'>
-            <p>{spot.city}, {spot.state}</p>
+        <div className='spot-name-rating'>
+            <p>{spot.name}</p>
             <p>
                 <i className="fa-sharp fa-solid fa-star"></i>
                 {!isNaN(spot.avgRating) ? <b>{spot.avgRating}</b> : <b>New</b>}

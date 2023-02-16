@@ -36,6 +36,16 @@
 
 .update-delete-button a {
     color: white;
+    font-size: 12px;
+    margin-right: 0;
+}
+
+.update-delete-button li {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    list-style: none;
+    color: white;
     margin-right: 0;
 }
 
