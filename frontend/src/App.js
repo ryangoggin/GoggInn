@@ -7,7 +7,7 @@ import LandingPageAllSpots from "./components/LandingPageAllSpots";
 import SpotDetails from "./components/SpotDetails";
 import CreateSpotForm from "./components/CreateSpot";
 import ManageSpots from "./components/ManageSpots";
-import GetEditSpot from "./components/EditSpot/GetEditSpot.js";
+import GetEditSpot from "./components/EditSpot/GetEditSpot";
 
 function App() {
   const dispatch = useDispatch();
