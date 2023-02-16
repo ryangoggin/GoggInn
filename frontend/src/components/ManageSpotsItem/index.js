@@ -7,7 +7,7 @@ const ManageSpotsItem = ({ spot }) => {
     <>
         <img className='spot-image' src={`${spot.previewImage}`} alt={`${spot.name}`} />
         <div className='spot-info-top'>
-            <p>{spot.city}, {spot.state}</p>
+            <p>{spot.name}</p>
             <p>
                 <i className="fa-sharp fa-solid fa-star"></i>
                 {!isNaN(spot.avgRating) ? <b>{spot.avgRating}</b> : <b>New</b>}

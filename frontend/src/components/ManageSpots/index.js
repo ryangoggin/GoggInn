@@ -3,10 +3,13 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getUserSpots, clearSingleSpot } from '../../store/spot';
 import ManageSpotsItem from '../ManageSpotsItem';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import DeleteSpotModal from "../DeleteSpotModal";
 import './ManageSpots.css';
+
 
 
 function ManageSpots() {
@@ -19,6 +22,26 @@ function ManageSpots() {
 
     const dispatch = useDispatch();
     const history = useHistory();
+
+    //use the following for delete spot modal
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
+
+    useEffect(() => {
+        if (!showMenu) return;
+
+        const closeMenu = (e) => {
+        if (!ulRef.current.contains(e.target)) {
+            setShowMenu(false);
+        }
+        };
+
+        document.addEventListener('click', closeMenu);
+
+        return () => document.removeEventListener("click", closeMenu);
+    }, [showMenu]);
+
+    const closeMenu = () => setShowMenu(false);
 
     //populate store with allSpots on render
     useEffect(() => {
@@ -64,7 +87,11 @@ function ManageSpots() {
                                     </Link>
                                 </button>
                                 <button className='update-delete-button'>
-                                    Delete
+                                <OpenModalMenuItem
+                                    itemText="Delete"
+                                    onItemClick={closeMenu}
+                                    modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                                />
                                 </button>
                             </div>
                             </div>

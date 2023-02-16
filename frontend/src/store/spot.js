@@ -8,6 +8,7 @@ const ADD_SPOT_IMAGES = 'spots/ADD_SPOT_IMAGES';
 const LOAD_USER_SPOTS = 'spots/GET_USER_SPOTS';
 const CLEAR_SINGLE_SPOT = 'spots/CLEAR_SINGLE_SPOT';
 const EDIT_SPOT = 'spot/EDIT_SPOT';
+const REMOVE_SPOT = 'spot/REMOVE_SPOT';
 
 // POJO action creators:
 // Feature 1: Landing Page All Spots
@@ -52,6 +53,12 @@ export const clearSingleSpot = () => ({
 const editSpot = spot => ({
   type: EDIT_SPOT,
   spot
+});
+
+// Feature 4: Manage Spots (Delete Spot)
+const removeSpot = spotId => ({
+  type: REMOVE_SPOT,
+  spotId
 });
 
 // thunk action creators:
@@ -129,28 +136,35 @@ export const updateSpot = (spot, spotId) => async dispatch => {
   //keep spot.Owner for after DB strips it off:
   const spotOwner = spot.Owner;
   const spotSpotImages = spot.SpotImages;
-  console.log("spotSpotImages: ", spotSpotImages);
-  console.log("spot in thunk: ", spot);
-  const resSpot = await csrfFetch(`/api/spots/${spotId}`, {
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(spot)
   });
 
-  if (resSpot.ok) {
-    const spot = await resSpot.json();
+  if (res.ok) {
+    const spot = await res.json();
     // DB strips SpotImages from spot... readd here
     spot.SpotImages = spotSpotImages;
     // DB strips Owner from spot... readd here
     spot.Owner = spotOwner;
     dispatch(editSpot(spot));
-    console.log("inside update thunk after dispatch spot: ", spot);
 
     return spot; //return so can be accessed for rerouting
   }
 };
 
+// Feature 4: Manage Spots (Delete USer Spot)
+export const deleteSpot = (spotId) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+      method: "DELETE"
+    });
 
+    if (res.ok) {
+      //don't need DELETE res, it is just a success message
+      dispatch(removeSpot(spotId));
+    }
+};
 
 const initialState = { allSpots: null, singleSpot: null, userSpots: null };
 
@@ -211,6 +225,13 @@ const spotReducer = (state = initialState, action) => {
             ...action.spot
           }
         }
+    case REMOVE_SPOT:
+      const newUserSpots = {...state.userSpots};
+      delete newUserSpots[action.spotId]
+      return {
+        ...state,
+        userSpots: newUserSpots
+      };
     default:
       return state;
   }
