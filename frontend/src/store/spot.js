@@ -226,9 +226,12 @@ const spotReducer = (state = initialState, action) => {
           }
         }
     case REMOVE_SPOT:
-      const newState = {...state};
-      delete newState.userSpots[action.spotId]
-      return newState;
+      const newUserSpots = {...state.userSpots};
+      delete newUserSpots[action.spotId]
+      return {
+        ...state,
+        userSpots: newUserSpots
+      };
     default:
       return state;
   }

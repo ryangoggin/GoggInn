@@ -27,6 +27,13 @@ function CreateSpotForm() {
 
     const sessionUser = useSelector(state => state.session.user);
 
+    useEffect(() => {
+      //hard code lat/lng for now, eventaully can have a geo spot API to get lat/lng based on input address
+      setLat(12.3456789);
+      setLng(12.3456789);
+    }, []);
+
+
     // redirect to / if no user logged in
     if (sessionUser === null) history.push(`/`);
 
@@ -124,15 +131,13 @@ function CreateSpotForm() {
       setErrors(errors);
     }, [country, address, city, state, lat, lng, description, name, price, previewUrl, image2Url, image3Url, image4Url, image5Url]);
 
+
+
     const handleSubmit = async (e) => {
       e.preventDefault();
 
       // track if submit has been pressed for error showing
       setHasSubmitted(true);
-
-      //hard code lat/lng for now, eventaully can have a geo spot API to get lat/lng based on input address
-      setLat(12.3456789);
-      setLng(12.3456789);
 
       const newSpot = {
         country,
@@ -164,6 +169,7 @@ function CreateSpotForm() {
       };
 
       if (newSpot) {
+        console.log("newSpot: ", newSpot);
         // use same .catch format from login/signup modals to directly grab errors from backend if time (backend needs rework to make errors and object and not setting one error at a time if doing this)
         const newSpotWithId = await dispatch(createSpot(newSpot, spotImages));
 
@@ -195,9 +201,6 @@ function CreateSpotForm() {
           <div className="first-section">
             <h2 className="section-header"> Where's your place  located?</h2>
             <p className="section-description"> Guests will only get your exact address once they booked a reservation. </p>
-            {/* <ul>
-                {errors.map((error, idx) => <li key={idx} className="errors">{error}</li>)}
-            </ul> */}
             <label className="form-text" htmlFor='country'>
             Country {<span className={hasSubmitted ? "error" : "hidden"}>{errors.country}</span>}
             </label>
@@ -299,28 +302,28 @@ function CreateSpotForm() {
                 value={image2Url}
                 onChange={(e) => setImage2Url(e.target.value)}
             />
-            {<span className={hasSubmitted ? "error" : "hidden"}>{errors.image2Url}</span>}
+            {<span className={(hasSubmitted && image2Url) ? "error" : "hidden"}>{errors.image2Url}</span>}
             <input
                 type="text"
                 placeholder="Image URL"
                 value={image3Url}
                 onChange={(e) => setImage3Url(e.target.value)}
             />
-            {<span className={hasSubmitted ? "error" : "hidden"}>{errors.image3Url}</span>}
+            {<span className={(hasSubmitted && image3Url) ? "error" : "hidden"}>{errors.image3Url}</span>}
             <input
                 type="text"
                 placeholder="Image URL"
                 value={image4Url}
                 onChange={(e) => setImage4Url(e.target.value)}
             />
-            {<span className={hasSubmitted ? "error" : "hidden"}>{errors.image4Url}</span>}
+            {<span className={(hasSubmitted && image4Url) ? "error" : "hidden"}>{errors.image4Url}</span>}
             <input
                 type="text"
                 placeholder="Image URL"
                 value={image5Url}
                 onChange={(e) => setImage5Url(e.target.value)}
             />
-            {<span className={hasSubmitted ? "error" : "hidden"}>{errors.image5Url}</span>}
+            {<span className={(hasSubmitted && image5Url) ? "error" : "hidden"}>{errors.image5Url}</span>}
           </div>
           <div className="create-spot-button-container">
           <button className="create-spot-button form-text" type="submit">Create Spot</button>
