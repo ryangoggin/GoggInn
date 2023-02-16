@@ -6,13 +6,8 @@ import "./DeleteSpot.css";
 
 function DeleteSpotModal({spotId}) {
   const dispatch = useDispatch();
-//   const [deleteOpen, setDeleteOpen] = useState(false);
 
   const { closeModal } = useModal();
-
-    // useEffect(() => {
-    //     setDeleteOpen(false);
-    // }, [closeModal]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
