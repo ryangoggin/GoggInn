@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import CreateReviewModal from '../CreateReviewModal';
 import { getAllSpots, getSpotDetail } from '../../store/spot';
 import { getSpotReviews } from '../../store/review';
 import './SpotDetails.css';
@@ -11,6 +13,26 @@ const SpotDetails = () => {
   const spot = useSelector(state => state.spot.singleSpot);
 
   const dispatch = useDispatch();
+
+  //use the following for create review modal
+  const [showMenu, setShowMenu] = useState(false);
+  const ulRef = useRef();
+
+  useEffect(() => {
+      if (!showMenu) return;
+
+      const closeMenu = (e) => {
+      if (!ulRef.current.contains(e.target)) {
+          setShowMenu(false);
+      }
+      };
+
+      document.addEventListener('click', closeMenu);
+
+      return () => document.removeEventListener("click", closeMenu);
+  }, [showMenu]);
+
+  const closeMenu = () => setShowMenu(false);
 
   // populate store with allSpots and singleSpot on render in case of refresh on spotDetails page
   useEffect(() => {
@@ -111,12 +133,19 @@ const SpotDetails = () => {
         </h2>
       </div>
       <div className={(sessionUser === null || spot.id === sessionUser.id || usersSpotReviewsArr.includes(sessionUser.id)) ? 'hidden' : 'post-review-button-container'}>
-          <button className='post-review-button'> Post your Review </button>
+          <button className='post-review-button'>
+            <OpenModalMenuItem
+                itemText="Post Your Review"
+                onItemClick={closeMenu}
+                modalComponent={<CreateReviewModal spotId={spot.id} />}
+            />
+          </button>
       </div>
-      <div className={spot.numReviews === 0 ? "no-reviews-container" : "hidden"}>
+      <div className={(spot.numReviews === 0 && sessionUser !== null) ? "no-reviews-container" : "hidden"}>
           <p className='no-reviews'>Be the first to post a review!</p>
       </div>
       {spotReviewsArr.map((spotReview) => {
+          console.log("spotReviewsArr: ", spotReviewsArr);
           return (
             <div key={`spotReviewId${spotReview.id}`} className='spot-review-container'>
                 <div className='spot-review'>
