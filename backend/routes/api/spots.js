@@ -363,11 +363,11 @@ router.post('/', requireAuth, async (req, res) => {
     } else if (!name || name.length > 50) {
         valError.error = "Name is required and must be less than 50 characters";
         return res.status(400).json(valError);
-    } else if (!description) {
-        valError.error = "Description is required";
+    } else if (description.length < 30) {
+        valError.error = "Description needs a minimum of 30 characters";
         return res.status(400).json(valError);
     } else if (!price) {
-        valError.error = "Price per day is required";
+        valError.error = "Price is required";
         return res.status(400).json(valError);
     }
 

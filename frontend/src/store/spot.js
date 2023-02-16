@@ -6,6 +6,8 @@ const LOAD_SINGLE_SPOT = 'spot/LOAD_SINGLE_SPOT';
 const ADD_SPOT = 'spot/ADD_SPOT';
 const ADD_SPOT_IMAGES = 'spots/ADD_SPOT_IMAGES';
 const LOAD_USER_SPOTS = 'spots/GET_USER_SPOTS';
+const CLEAR_SINGLE_SPOT = 'spots/CLEAR_SINGLE_SPOT';
+const EDIT_SPOT = 'spot/EDIT_SPOT';
 
 // POJO action creators:
 // Feature 1: Landing Page All Spots
@@ -36,10 +38,21 @@ const addSpotImages = (spot, spotImages) => ({
 });
 
 // Feature 4: Manage Spots (Get Current User's Spots)
-const loadUserSpots = (userSpots) => ({
+const loadUserSpots = userSpots => ({
   type: LOAD_USER_SPOTS,
   userSpots
-})
+});
+
+// Feature 4: Manage Spots (Clear Single Spot on Manage Spots Dismount)
+export const clearSingleSpot = () => ({
+  type: CLEAR_SINGLE_SPOT
+});
+
+// Feature 4: Manage Spots (Edit Spot)
+const editSpot = spot => ({
+  type: EDIT_SPOT,
+  spot
+});
 
 // thunk action creators:
 // Feature 1: Landing Page All Spots
@@ -59,6 +72,7 @@ export const getSpotDetail = (id) => async dispatch => {
   if (res.ok) {
     const spot = await res.json();
     dispatch(loadSingleSpot(spot));
+    return spot;
   }
 };
 
@@ -74,7 +88,6 @@ export const createSpot = (spot, spotImages) => async dispatch => {
 
   if (resSpot.ok) {
     const spot = await resSpot.json();
-    console.log("inside thunk spot: ", spot);
     dispatch(addSpot(spot));
 
     const spotImagesArr = [];
@@ -110,6 +123,33 @@ export const getUserSpots = () => async dispatch => {
     dispatch(loadUserSpots(userSpots));
   }
 };
+
+// Feature 4: Manage Spots (Update User Spot)
+export const updateSpot = (spot, spotId) => async dispatch => {
+  //keep spot.Owner for after DB strips it off:
+  const spotOwner = spot.Owner;
+  const spotSpotImages = spot.SpotImages;
+  console.log("spotSpotImages: ", spotSpotImages);
+  console.log("spot in thunk: ", spot);
+  const resSpot = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "PUT",
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(spot)
+  });
+
+  if (resSpot.ok) {
+    const spot = await resSpot.json();
+    // DB strips SpotImages from spot... readd here
+    spot.SpotImages = spotSpotImages;
+    // DB strips Owner from spot... readd here
+    spot.Owner = spotOwner;
+    dispatch(editSpot(spot));
+    console.log("inside update thunk after dispatch spot: ", spot);
+
+    return spot; //return so can be accessed for rerouting
+  }
+};
+
 
 
 const initialState = { allSpots: null, singleSpot: null, userSpots: null };
@@ -149,16 +189,28 @@ const spotReducer = (state = initialState, action) => {
               SpotImages: action.payload.spotImages
           }
         };
-      case LOAD_USER_SPOTS:
+    case LOAD_USER_SPOTS:
         const userSpots = {};
         const userSpotsArr = action.userSpots.Spots;
         userSpotsArr.forEach(spot => {
           userSpots[spot.id] = spot;
         });
-          return {
-            ...state,
-            userSpots: userSpots
-          };
+        return {
+          ...state,
+          userSpots: userSpots
+        };
+    case CLEAR_SINGLE_SPOT:
+        return {
+          ...state,
+          singleSpot: null
+        }
+    case EDIT_SPOT:
+        return {
+          ...state,
+          singleSpot: {
+            ...action.spot
+          }
+        }
     default:
       return state;
   }

@@ -24,8 +24,6 @@ const SpotDetails = () => {
   let bigSpotImage;
   if (spot) {
     for (let i = 0; i < 5; i++) {
-      console.log("spot: ", spot);
-      console.log("spot.SpotImages", spot.SpotImages);
       if (spot.SpotImages[i]) {
         (spot.SpotImages[i].preview && !bigSpotImage) ? bigSpotImage = spot.SpotImages[i] : smallSpotImages.push(spot.SpotImages[i]);
       }
@@ -50,7 +48,7 @@ const SpotDetails = () => {
     </div>
     <div className={(smallSpotImages.length > 0) ? 'spot-details-image-container': 'big-image-only-container'}>
       <div className={(smallSpotImages.length > 0) ? 'big-image-container' : 'big-image-only-sub-container'}>
-        <img className={(smallSpotImages.length > 0) ? 'big-image' : 'big-image-only'} src={bigSpotImage.url} alt={`spotImage #${bigSpotImage.id}`} />
+        <img key={bigSpotImage.id} className={(smallSpotImages.length > 0) ? 'big-image' : 'big-image-only'} src={bigSpotImage.url} alt={`spotImage #${bigSpotImage.id}`} />
       </div>
       <div className={(smallSpotImages.length > 0) ? 'small-images-container' : 'hidden'}>
         {smallSpotImages.map((spotImage) => {

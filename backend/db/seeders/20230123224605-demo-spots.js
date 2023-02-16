@@ -20,7 +20,7 @@ module.exports = {
         lng: -122.4730327, //W is negative
         name: "App Academy",
         description: "Place where web developers are created",
-        price: 123
+        price: 123.00
       },
       {
         ownerId: 2,
@@ -31,7 +31,7 @@ module.exports = {
         lat: 27.6648358,
         lng: -81.5158327,
         name: "Spongebob's Pineapple",
-        description: "Place where Spongebob lives",
+        description: "Place where Spongebob lives, it is underwater in Bikin Bottom",
         price: 999.62
       },
       {
@@ -43,7 +43,7 @@ module.exports = {
         lat: 41.5801358,
         lng: -71.4774327,
         name: "Griffin House",
-        description: "Place where Peetah Griffin lives",
+        description: "Place where Peetah Griffin lives, it is in Quahog",
         price: 150.50
       },
       {
@@ -55,7 +55,7 @@ module.exports = {
         lat: 39.7817358,
         lng: -89.6501327,
         name: "Simpsons House",
-        description: "Place where The Simpsons live",
+        description: "Place where The Simpsons live, it is in Springfield",
         price: 160.75
       },
       {
@@ -67,7 +67,7 @@ module.exports = {
         lat: 39.5501123,
         lng: -105.7821392,
         name: "The Park",
-        description: "Place where Mordecai and Rigby live",
+        description: "Place where Mordecai and Rigby live, it is in The Park",
         price: 183.83
       },
       {
@@ -79,7 +79,7 @@ module.exports = {
         lat: 40.7831752,
         lng: -73.9712058,
         name: "Planet Express",
-        description: "Headquarters of Planet Express",
+        description: "Headquarters of Planet Express, it is where ppl in Futurama work",
         price: 295.60
       }
     ], {});
