@@ -92,8 +92,9 @@ input::placeholder, textarea::placeholder {
 }
 
 .comma {
-    position: relative;
-    top: 17px;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 5px;
     font-weight: bold;
 }
 
@@ -117,8 +118,8 @@ input::placeholder, textarea::placeholder {
     margin: 0;
     font-size: 20px;
     font-weight: bold;
-    position: relative;
-    top: 7px;
+    display: flex;
+    align-items: center;
     margin-right: 5px;
 }
 

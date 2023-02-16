@@ -30,9 +30,9 @@ function LandingPageAllSpots(){
     <div className='all-spots-container'>
         {allSpotsArr.map((spot) => {
           return (
-            <div key={spot.id} className='spot-item-container'>
+            <div key={`spotContainerId${spot.id}`} className='spot-item-container'>
                 <div className='spot-item'>
-                    <Link key={spot.id} to={`/spots/${spot.id}`} style={{ textDecoration: 'none' }}>
+                    <Link key={`spotId${spot.id}`} to={`/spots/${spot.id}`} style={{ textDecoration: 'none' }}>
                         <LandingPageSpotItem spot={spot}/>
                     </Link>
                 </div>

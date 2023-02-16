@@ -49,11 +49,12 @@ h1, h2, h3, p {
 }
 
 .spot-info-container {
-    margin: 0 auto;
-    padding: 0px 40px 0px;
+    margin: 0px 40px 0px;
+    padding: 0px 0px 20px;
     display: grid;
-    gap: 20px;
-    grid-template-columns: 66% 33%;
+    gap: 4%;
+    grid-template-columns: 60% 36%;
+    border-bottom: solid gray;
 }
 
 .callout-info-box {
@@ -68,9 +69,39 @@ h1, h2, h3, p {
     justify-content: space-between;
 }
 
+.rating-reviews {
+    display: flex;
+    justify-content: space-between;
+    width: fit-content;
+}
+
+.spot-reviews-container {
+    margin: 0 40px 0;
+}
+
+.big-rating-reviews {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: fit-content;
+    height: 50px;
+    margin-top: 10px;
+}
+
+.big-star {
+    font-size: 20px;
+}
+
+.centered-dot {
+    margin: 0px 5px 0px;
+    display: flex;
+    align-items: center;
+}
+
 .reserve-button {
     background-color: #FF5A5F;
     color: white;
+    font-family: 'Montserrat', sans-serif;
     display: block;
     width: 100%;
     margin-top: 10px;
@@ -84,4 +115,41 @@ h1, h2, h3, p {
 .reserve-button:hover {
     background-color: #ff5a608a;
     cursor: pointer;
+}
+
+.post-review-button {
+    background-color: rgb(110, 110, 110);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    display: block;
+    width: fit-content;
+    margin-bottom: 15px;
+    border: none;
+    padding: 7px 10px 7px;
+    border-radius: 5px;
+    box-shadow: 3px 3px black;
+}
+
+.post-review-button:hover {
+    background-color:rgba(110, 110, 110, 0.65);
+    cursor: pointer;
+}
+
+.spot-review {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 20px;
+}
+
+.spot-review-name, .spot-review-date, .spot-review-text {
+    margin: 0;
+}
+
+h3.spot-review-name {
+    margin-bottom: 3px;
+    margin-top: 20px;
+}
+
+h4.spot-review-date {
+    margin-bottom: 7px;
+    color: gray;
 }
