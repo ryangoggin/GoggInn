@@ -169,7 +169,6 @@ function CreateSpotForm() {
       };
 
       if (newSpot) {
-        console.log("newSpot: ", newSpot);
         // use same .catch format from login/signup modals to directly grab errors from backend if time (backend needs rework to make errors and object and not setting one error at a time if doing this)
         const newSpotWithId = await dispatch(createSpot(newSpot, spotImages));
 
