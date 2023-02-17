@@ -23,6 +23,8 @@ h1, h2, h3, p {
 .big-image {
     width: 100%;
     height: 412px;
+    object-fit: cover;
+    object-position: bottom;
 }
 
 .small-images-container {
@@ -37,6 +39,8 @@ h1, h2, h3, p {
 .small-image {
     width: 100%;
     height: 205px;
+    object-fit: cover;
+    object-position: bottom;
 }
 
 .big-image-only-sub-container {
@@ -46,6 +50,9 @@ h1, h2, h3, p {
 
 .big-image-only {
     width: 50%;
+    height: 412px;
+    object-fit: cover;
+    object-position: bottom;
 }
 
 .spot-info-container {

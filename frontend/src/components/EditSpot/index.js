@@ -103,9 +103,9 @@ function EditSpotForm({editSpot}) {
     if (sessionUser === null) history.push(`/`);
 
     // redirect to / if sessionUser isn't spot owner:
-    console.log("sessionUser.id: ", sessionUser.id);
-    console.log("editSpot.Owner.id: ", editSpot.Owner.id);
-    if (sessionUser.id !== editSpot.Owner.id) history.push(`/`);
+    if (sessionUser !== null) {
+        if (sessionUser.id !== editSpot.Owner.id) history.push(`/`);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
