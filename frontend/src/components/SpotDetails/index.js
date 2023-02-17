@@ -46,7 +46,8 @@ const SpotDetails = () => {
   const sessionUser = useSelector(state => state.session.user);
   const spotReviews = useSelector(state => state.review.spot);
   if (spotReviews === null) return null; //return null to avoid null going into Object.values
-  const spotReviewsArr = Object.values(spotReviews);
+  let spotReviewsArr = Object.values(spotReviews);
+  spotReviewsArr = spotReviewsArr.reverse(); // reverse for newest at top
   // map an array of all user's who have left reviews to check if curr user is in array
   const usersSpotReviewsArr = spotReviewsArr.map(spotReview => spotReview.userId);
 
