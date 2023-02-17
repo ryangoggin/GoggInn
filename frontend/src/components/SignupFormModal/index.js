@@ -28,7 +28,6 @@ function SignupFormModal() {
           if (!Array.isArray(data.errors)) {
             data.errors = Object.values(data.errors);
           }
-          console.log("data: ", data);
           if (data && data.errors) setErrors(data.errors);
         });
     }
