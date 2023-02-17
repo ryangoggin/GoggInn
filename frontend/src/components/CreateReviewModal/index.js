@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
@@ -8,6 +8,8 @@ import "./CreateReview.css";
 function CreateReviewModal({spotId}) {
   const dispatch = useDispatch();
   const [review, setReview] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const [ rating, setRating ] = useState(0);
   const [hover, setHover] = useState(0);
@@ -17,10 +19,25 @@ function CreateReviewModal({spotId}) {
 
   const { closeModal } = useModal();
 
+  // handle errors instead of disabling submit button
+  useEffect(() => {
+      const valErrors = [];
+      if (review.length < 10) valErrors.push("Review must be more than 10 characters");
+      if (rating < 1) valErrors.push("Rating must be 1-5 stars");
+      setErrors(valErrors);
+  }, [review, rating]);
+
   if (spot === null) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setHasSubmitted(true);
+
+    if (errors.length > 0) {
+        window.alert("Fix review errors before submitting!");
+        return;
+    }
 
     const newReview = {
         review,
@@ -44,12 +61,23 @@ function CreateReviewModal({spotId}) {
 
     dispatch(createSpotReview(newReview, spotId, sessionUser))
       .then(closeModal);
+
+    setRating(0);
+    setHover(0);
+    setReview("");
+    setErrors([]);
+    setHasSubmitted(false);
   };
 
   return (
     <div className='delete-spot-form-container'>
         <form className="delete-spot-form" onSubmit={handleSubmit}>
         <h1 className="form-text form-header">How was your stay?</h1>
+        <ul className="errors-list">
+          {hasSubmitted && errors.map((error, idx) => (
+              <li key={`error${idx}`} className="errors">{error}</li>
+            ))}
+        </ul>
         <textarea
             className="review-textarea"
             placeholder="Leave your review here"
@@ -76,7 +104,7 @@ function CreateReviewModal({spotId}) {
             })}
         <p className="stars-text"><b>Stars</b></p>
       </div>
-        <button className="form-button form-text submit-review-button" type="submit" disabled={review.length < 10 || rating < 1}>Submit Your Review</button>
+        <button className="form-button form-text submit-review-button" type="submit" >Submit Your Review</button>
         </form>
     </div>
   );

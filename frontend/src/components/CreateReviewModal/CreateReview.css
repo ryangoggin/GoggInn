@@ -22,6 +22,11 @@ textarea::placeholder {
     cursor: pointer;
 }
 
+.errors-list {
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
 .submit-review-button {
     border-radius: 5px;
     box-shadow: 3px 3px black;

@@ -167,3 +167,25 @@ h4.spot-review-date {
     margin-bottom: 7px;
     color: gray;
 }
+
+.delete-review-button {
+    background-color: rgb(110, 110, 110);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    display: block;
+    width: fit-content;
+    margin-bottom: 15px;
+    border: none;
+    padding: 7px 10px 7px;
+    border-radius: 5px;
+    box-shadow: 3px 3px black;
+}
+
+.delete-review-button li {
+    list-style: none;
+}
+
+.delete-review-button:hover {
+    background-color:rgba(110, 110, 110, 0.65);
+    cursor: pointer;
+}
