@@ -69,6 +69,10 @@ const SpotDetails = () => {
     }
   }
 
+  if (smallSpotImages) {
+    smallSpotImages = smallSpotImages.filter(spotImage => spotImage.id !== undefined);
+  }
+
   const handleReserve = (e) => {
     e.preventDefault();
     window.alert('Feature Coming Soon...');

@@ -47,9 +47,9 @@ function ManageSpots() {
     useEffect(() => {
         dispatch(getUserSpots());
         dispatch(clearSingleSpot());
-        return () => {
-            dispatch(clearSingleSpot());
-        }
+        // return () => {
+        //     dispatch(clearSingleSpot());
+        // }
     }, [dispatch]);
 
     const sessionUser = useSelector(state => state.session.user);
@@ -82,12 +82,12 @@ function ManageSpots() {
                                     <b>${Number.parseFloat(spot.price).toFixed(2)}</b>/night
                                 </Link>
                                 <div className='update-delete-container'>
-                                <button className='update-delete-button'>
+                                <button className='update-button'>
                                     <Link exact="true" to={`/spots/${spot.id}/edit`} className="update-spot">
                                         Update
                                     </Link>
                                 </button>
-                                <button className='update-delete-button'>
+                                <button className='delete-button'>
                                 <OpenModalMenuItem
                                     itemText="Delete"
                                     onItemClick={closeMenu}

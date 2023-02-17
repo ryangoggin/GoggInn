@@ -23,9 +23,21 @@
     text-decoration: none;
     font-size: 15px;
     margin: 0;
+    padding-top: 5px;
 }
 
-.update-delete-button {
+.update-button {
+    height: 30px;
+    margin-left: 5px;
+    background-color: #FF5A5F;
+    margin-bottom: 15px;
+    border: solid 2px black;
+    border-radius: 5px;
+    box-shadow: 2px 2px black;
+}
+
+.delete-button {
+    height: 30px;
     margin-left: 5px;
     background-color: rgb(110, 110, 110);
     margin-bottom: 15px;
@@ -34,22 +46,29 @@
     box-shadow: 2px 2px black;
 }
 
-.update-delete-button a {
+.update-button a {
     color: white;
     font-size: 12px;
     margin-right: 0;
+    padding: 0px 5px 0px;
 }
 
-.update-delete-button li {
+.delete-button li {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 12px;
     list-style: none;
     color: white;
     margin-right: 0;
+    padding: 2px 5px 2px;
 }
 
-.update-delete-button:hover {
+.update-button:hover {
+    background-color: #ff5a608a;
+    cursor: pointer;
+}
+
+.delete-button:hover {
     background-color: rgba(110, 110, 110, 0.65);
     cursor: pointer;
 }
