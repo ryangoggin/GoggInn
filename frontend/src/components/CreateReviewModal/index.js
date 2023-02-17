@@ -27,8 +27,20 @@ function CreateReviewModal({spotId}) {
         stars: rating
     }
 
+    // make avgRating and numReviews 0 if it is NaN
+    if (isNaN(spot.avgStarRating)) spot.avgStarRating = 0;
+    if (isNaN(spot.numReviews)) spot.numReviews = 0;
+
+    //get cumulative rating before incrementing
+    let cumulativeRating = parseFloat(spot.avgStarRating) * parseFloat(spot.numReviews);
+
     //increment numReviews so it rerenders up to date
     spot.numReviews++;
+
+    //update avgRating as well (add new rating to cumulative, divide by newly incrememnted numReviews)
+    spot.avgStarRating = (cumulativeRating + rating)/spot.numReviews;
+    //set to 1 decimal place for consistency
+    spot.avgStarRating = spot.avgStarRating.toFixed(1);
 
     dispatch(createSpotReview(newReview, spotId, sessionUser))
       .then(closeModal);
@@ -49,6 +61,7 @@ function CreateReviewModal({spotId}) {
             index++;
             return (
                 <button
+                className="star-button"
                 key={`index${index}`}
                 onClick={(e) => {
                     e.preventDefault();
@@ -63,7 +76,7 @@ function CreateReviewModal({spotId}) {
             })}
         <p className="stars-text"><b>Stars</b></p>
       </div>
-        <button className="form-button form-text submit-review-button" type="submit" disabled={review.length < 10}>Submit Your Review</button>
+        <button className="form-button form-text submit-review-button" type="submit" disabled={review.length < 10 || rating < 1}>Submit Your Review</button>
         </form>
     </div>
   );

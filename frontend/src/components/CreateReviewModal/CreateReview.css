@@ -16,7 +16,7 @@ textarea::placeholder {
     justify-content: center;
 }
 
-button {
+.star-button {
     background-color: white;
     border: none;
     cursor: pointer;
