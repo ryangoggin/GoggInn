@@ -46,7 +46,8 @@ const SpotDetails = () => {
   const sessionUser = useSelector(state => state.session.user);
   const spotReviews = useSelector(state => state.review.spot);
   if (spotReviews === null) return null; //return null to avoid null going into Object.values
-  const spotReviewsArr = Object.values(spotReviews);
+  let spotReviewsArr = Object.values(spotReviews);
+  spotReviewsArr = spotReviewsArr.reverse(); // reverse for newest at top
   // map an array of all user's who have left reviews to check if curr user is in array
   const usersSpotReviewsArr = spotReviewsArr.map(spotReview => spotReview.userId);
 
@@ -154,7 +155,7 @@ const SpotDetails = () => {
             <div key={`spotReviewId${spotReview.id}`} className={(sessionUser === null) ? 'spot-review-container' : (sessionUser.id === spotReview.User.id ? 'spot-review-container-with-delete' : 'spot-review-container')}>
                 <div className={(sessionUser === null) ? 'spot-review' : (sessionUser.id === spotReview.User.id ? 'spot-review-with-delete' : 'spot-review')}>
                   <h3 className='spot-review-name'>{spotReview.User.firstName}</h3>
-                  <h4 className='spot-review-date'>{spotReview.createdAt.slice(0, 10)}</h4>
+                  <h4 className='spot-review-date'>{new Date(spotReview.createdAt).toISOString().slice(0, 10)}</h4>
                   <p className='spot-review-text'>{spotReview.review}</p>
                 </div>
                 <button className={(sessionUser === null) ? "hidden" : (sessionUser.id === spotReview.User.id ? "delete-review-button" : "hidden")}>
