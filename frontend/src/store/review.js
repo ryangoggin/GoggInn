@@ -1,11 +1,10 @@
 import { csrfFetch } from "./csrf";
 
 // types
-// Feature 5: Load Spot Reviews
 const LOAD_SPOT_REVIEWS = 'review/LOAD_SPOT_REVIEWS';
-
-// Feature 6: Creat a Spot Review
 const ADD_SPOT_REVIEW = 'review/ADD_SPOT_REVIEW';
+const REMOVE_SPOT_REVIEW = 'review/REMOVE_SPOT_REVIEW';
+
 
 // POJO action creators
 // Feature 5: Load Spot Reviews
@@ -14,11 +13,17 @@ const loadSpotReviews = reviews => ({
     reviews
 });
 
-// Feature 6: Creat a Spot Review
+// Feature 6: Add a Spot Review
 const addSpotReview = review => ({
     type: ADD_SPOT_REVIEW,
     review
-})
+});
+
+// Feature 7: Remove a Spot Review
+const removeSpotReview = reviewId => ({
+    type: REMOVE_SPOT_REVIEW,
+    reviewId
+});
 
 // thunk action creators
 // Feature 5: Get Spot Reviews
@@ -31,7 +36,7 @@ export const getSpotReviews = (spotId) => async dispatch => {
     }
 };
 
-// Feature 6: Creat a Spot Review
+// Feature 6: Create a Spot Review
 export const createSpotReview = (review, spotId, sessionUser) => async dispatch => {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: "POST",
@@ -48,6 +53,18 @@ export const createSpotReview = (review, spotId, sessionUser) => async dispatch 
         lastName: sessionUser.lastName
       }
       dispatch(addSpotReview(spotReview));
+    }
+};
+
+// Feature 7: Delete a Spot Review
+export const deleteReview = (reviewId) => async dispatch => {
+    const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+      method: "DELETE"
+    });
+
+    if (res.ok) {
+      //don't need DELETE res, it is just a success message
+      dispatch(removeSpotReview(reviewId));
     }
 };
 
@@ -74,6 +91,13 @@ const reviewReducer = (state = initialState, action) => {
             ...state,
             spot: spotReviews
         }
+      case REMOVE_SPOT_REVIEW:
+        const newSpotReviews = {...state.spot};
+        delete newSpotReviews[action.reviewId]
+        return {
+          ...state,
+          spot: newSpotReviews
+        };
       default:
         return state;
     }

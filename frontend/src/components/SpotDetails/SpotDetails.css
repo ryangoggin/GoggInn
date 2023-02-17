@@ -76,7 +76,7 @@ h1, h2, h3, p {
 }
 
 .spot-reviews-container {
-    margin: 0 40px 0;
+    margin: 0 40px 0px;
 }
 
 .big-rating-reviews {
@@ -139,9 +139,19 @@ h1, h2, h3, p {
     cursor: pointer;
 }
 
-.spot-review {
+.spot-review-container {
     font-family: 'Montserrat', sans-serif;
     margin-bottom: 20px;
+}
+
+.spot-review-container-with-delete {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 5px;
+}
+
+.spot-review-with-delete {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 5px;
 }
 
 .spot-review-name, .spot-review-date, .spot-review-text {
@@ -156,4 +166,26 @@ h3.spot-review-name {
 h4.spot-review-date {
     margin-bottom: 7px;
     color: gray;
+}
+
+.delete-review-button {
+    background-color: rgb(110, 110, 110);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    display: block;
+    width: fit-content;
+    margin-bottom: 15px;
+    border: none;
+    padding: 7px 10px 7px;
+    border-radius: 5px;
+    box-shadow: 3px 3px black;
+}
+
+.delete-review-button li {
+    list-style: none;
+}
+
+.delete-review-button:hover {
+    background-color:rgba(110, 110, 110, 0.65);
+    cursor: pointer;
 }

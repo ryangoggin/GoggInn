@@ -1,0 +1,33 @@
+div#modal-content {
+    border-radius: 10px;
+}
+
+.delete-review-form {
+    width: 350px;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 40px 20px;
+    text-align: left;
+    border: solid black;
+    border-radius: 10px;
+}
+
+.yes-button {
+    border: solid black;
+    box-shadow: 3px 3px black;
+    font-weight: bold;
+    width: 100%;
+}
+
+.no-button {
+    background-color: rgb(110, 110, 110);
+    border: solid black;
+    box-shadow: 3px 3px black;
+    font-weight: bold;
+    width: 100%;
+}
+
+.no-button:hover {
+    background-color: rgba(110, 110, 110, 0.65);
+}

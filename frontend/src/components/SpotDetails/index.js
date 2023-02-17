@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, useRef } from 'react';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import CreateReviewModal from '../CreateReviewModal';
+import DeleteReviewModal from '../DeleteReviewModal';
 import { getAllSpots, getSpotDetail } from '../../store/spot';
 import { getSpotReviews } from '../../store/review';
 import './SpotDetails.css';
@@ -145,14 +146,20 @@ const SpotDetails = () => {
           <p className='no-reviews'>Be the first to post a review!</p>
       </div>
       {spotReviewsArr.map((spotReview) => {
-          console.log("spotReviewsArr: ", spotReviewsArr);
           return (
-            <div key={`spotReviewId${spotReview.id}`} className='spot-review-container'>
-                <div className='spot-review'>
+            <div key={`spotReviewId${spotReview.id}`} className={sessionUser.id === spotReview.User.id ? 'spot-review-container-with-delete' : 'spot-review-container'}>
+                <div className={sessionUser.id === spotReview.User.id ? 'spot-review-with-delete' : 'spot-review'}>
                   <h3 className='spot-review-name'>{spotReview.User.firstName}</h3>
                   <h4 className='spot-review-date'>{spotReview.createdAt.slice(0, 10)}</h4>
                   <p className='spot-review-text'>{spotReview.review}</p>
                 </div>
+                <button className={sessionUser.id === spotReview.User.id ? "delete-review-button" : "hidden"}>
+                <OpenModalMenuItem
+                    itemText="Delete"
+                    onItemClick={closeMenu}
+                    modalComponent={<DeleteReviewModal reviewId={spotReview.id} />}
+                />
+                </button>
             </div>
           );
         })}

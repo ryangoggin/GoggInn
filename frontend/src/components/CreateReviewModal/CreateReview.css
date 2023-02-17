@@ -16,10 +16,15 @@ textarea::placeholder {
     justify-content: center;
 }
 
-button {
+.star-button {
     background-color: white;
     border: none;
     cursor: pointer;
+}
+
+.errors-list {
+    flex-direction: column;
+    margin-bottom: 10px;
 }
 
 .submit-review-button {
