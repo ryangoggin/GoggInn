@@ -155,7 +155,7 @@ const SpotDetails = () => {
             <div key={`spotReviewId${spotReview.id}`} className={(sessionUser === null) ? 'spot-review-container' : (sessionUser.id === spotReview.User.id ? 'spot-review-container-with-delete' : 'spot-review-container')}>
                 <div className={(sessionUser === null) ? 'spot-review' : (sessionUser.id === spotReview.User.id ? 'spot-review-with-delete' : 'spot-review')}>
                   <h3 className='spot-review-name'>{spotReview.User.firstName}</h3>
-                  <h4 className='spot-review-date'>{spotReview.createdAt.slice(0, 10)}</h4>
+                  <h4 className='spot-review-date'>{new Date(spotReview.createdAt).toISOString().slice(0, 10)}</h4>
                   <p className='spot-review-text'>{spotReview.review}</p>
                 </div>
                 <button className={(sessionUser === null) ? "hidden" : (sessionUser.id === spotReview.User.id ? "delete-review-button" : "hidden")}>
