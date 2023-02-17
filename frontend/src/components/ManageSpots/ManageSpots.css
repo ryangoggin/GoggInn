@@ -7,7 +7,7 @@
 
 .create-new-spot-button {
     margin-left: 40px;
-    background-color: rgb(110, 110, 110);
+    background-color: #FF5A5F;
     margin-bottom: 15px;
     border: none;
     padding: 7px 10px 7px;
@@ -22,7 +22,7 @@
 }
 
 .create-new-spot-button:hover {
-    background-color: rgba(110, 110, 110, 0.65);
+    background-color: #ff5a608a;
     cursor: pointer;
 }
 
