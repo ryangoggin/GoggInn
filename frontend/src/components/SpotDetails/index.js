@@ -133,7 +133,7 @@ const SpotDetails = () => {
           <b className={spot.numReviews === 0 ? "hidden": ""}>{spot.numReviews === 1 ? `${spot.numReviews} Review` : `${spot.numReviews} Reviews`}</b>
         </h2>
       </div>
-      <div className={(sessionUser === null || spot.id === sessionUser.id || usersSpotReviewsArr.includes(sessionUser.id)) ? 'hidden' : 'post-review-button-container'}>
+      <div className={(sessionUser === null || spot.Owner.id === sessionUser.id || usersSpotReviewsArr.includes(sessionUser.id)) ? 'hidden' : 'post-review-button-container'}>
           <button className='post-review-button'>
             <OpenModalMenuItem
                 itemText="Post Your Review"
@@ -143,7 +143,7 @@ const SpotDetails = () => {
           </button>
       </div>
       <div className={(spot.numReviews === 0 && sessionUser !== null) ? "no-reviews-container" : "hidden"}>
-          <p className='no-reviews'>Be the first to post a review!</p>
+          <p className='no-reviews'>{sessionUser === null ? "This spot has no reviews yet (this will be hidden)" : (spot.Owner.id === sessionUser.id ? "Your spot has no reviews yet" : "Be the first to post a review!")}</p>
       </div>
       {spotReviewsArr.map((spotReview) => {
           return (
