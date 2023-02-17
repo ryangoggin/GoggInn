@@ -46,6 +46,7 @@ function ManageSpots() {
     //populate store with allSpots on render
     useEffect(() => {
         dispatch(getUserSpots());
+        dispatch(clearSingleSpot());
         return () => {
             dispatch(clearSingleSpot());
         }
