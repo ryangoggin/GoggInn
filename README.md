@@ -27,6 +27,8 @@ GoggInn is a full-stack clone of Airbnb made with JS using React and Redux on th
 ### Deployment:
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
 
+## Future Implementation Goals:
+* Bookings
 
 ## Core Features:
 ### Spots
