@@ -63,44 +63,46 @@ function ManageSpots() {
 
     return (
         <>
-            <h1 className="manage-spots-header">Manage Spots</h1>
-            <button className="create-new-spot-button">
-                    <Link exact="true" to="/spots/new" className="create-new-spot nav-text">
-                    Create a New Spot
-                    </Link>
-            </button>
-            <div className='user-spots-container'>
-                {userSpotsArr.map((spot) => {
-                return (
-                    <div key={spot.id} className='user-spot-item-container'>
-                        <div className='user-spot-item'>
-                            <Link key={spot.id} exact="true" to={`/spots/${spot.id}`} style={{ textDecoration: 'none' }}>
-                                <ManageSpotsItem spot={spot}/>
-                            </Link>
-                            <div className='spot-info-bottom'>
+            <div className="manage-spots-page-container">
+                <h1 className="manage-spots-header">Manage Spots</h1>
+                <button className="create-new-spot-button">
+                        <Link exact="true" to="/spots/new" className="create-new-spot nav-text">
+                        Create a New Spot
+                        </Link>
+                </button>
+                <div className='user-spots-container'>
+                    {userSpotsArr.map((spot) => {
+                    return (
+                        <div key={spot.id} className='user-spot-item-container'>
+                            <div className='user-spot-item'>
                                 <Link key={spot.id} exact="true" to={`/spots/${spot.id}`} style={{ textDecoration: 'none' }}>
-                                    <b>${Number.parseFloat(spot.price).toFixed(2)}</b>/night
+                                    <ManageSpotsItem spot={spot}/>
                                 </Link>
-                                <div className='update-delete-container'>
-                                <button className='update-button'>
-                                    <Link exact="true" to={`/spots/${spot.id}/edit`} className="update-spot">
-                                        Update
+                                <div className='spot-info-bottom'>
+                                    <Link key={spot.id} exact="true" to={`/spots/${spot.id}`} style={{ textDecoration: 'none' }}>
+                                        <b>${Number.parseFloat(spot.price).toFixed(2)}</b>/night
                                     </Link>
-                                </button>
-                                <button className='delete-button'>
-                                <OpenModalMenuItem
-                                    itemText="Delete"
-                                    onItemClick={closeMenu}
-                                    modalComponent={<DeleteSpotModal spotId={spot.id} />}
-                                />
-                                </button>
-                            </div>
+                                    <div className='update-delete-container'>
+                                    <button className='update-button'>
+                                        <Link exact="true" to={`/spots/${spot.id}/edit`} className="update-spot">
+                                            Update
+                                        </Link>
+                                    </button>
+                                    <button className='delete-button'>
+                                    <OpenModalMenuItem
+                                        itemText="Delete"
+                                        onItemClick={closeMenu}
+                                        modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                                    />
+                                    </button>
+                                </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                );
-                })}
+                    );
+                    })}
+                </div>
             </div>
         </>
     )

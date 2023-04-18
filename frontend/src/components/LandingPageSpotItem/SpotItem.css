@@ -3,6 +3,9 @@
 .spot-image {
     width: 270px;
     height: 250px;
+
+    border-radius: 20px;
+
     object-fit: cover;
     object-position: bottom;
 }
