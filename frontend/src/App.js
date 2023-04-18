@@ -21,11 +21,21 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route exact path="/" component={LandingPageAllSpots} />
-          <Route path="/spots/new" component={CreateSpotForm} />
-          <Route path="/spots/current" component={ManageSpots} />
-          <Route path="/spots/:spotId/edit" component={GetEditSpot} />
-          <Route path="/spots/:spotId" component={SpotDetails} />
+          <Route exact path="/">
+            <LandingPageAllSpots />
+          </Route>
+          <Route path="/spots/new">
+            <CreateSpotForm />
+          </Route>
+          <Route path="/spots/current">
+            <ManageSpots />
+          </Route>
+          <Route path="/spots/:spotId/edit">
+            <GetEditSpot />
+          </Route>
+          <Route path="/spots/:spotId">
+            <SpotDetails />
+          </Route>
           <Route>
             <p>Page Not Found</p>
           </Route>

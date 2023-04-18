@@ -23,16 +23,21 @@ li.no-hover:hover {
 ul {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding-inline-start: 20px;
     margin: 0;
 }
 
 .nav-container {
     width:100vw;
-    position: sticky;
+    position: fixed;
     top: 0;
-    padding-top: 10px;
-    border-bottom: solid gray;
+
+    z-index: 2;
+
+    padding: 15px 0px 15px;
+
+    border-bottom: solid 1px gray;
     background-color: white;
 }
 
@@ -61,10 +66,10 @@ ul {
     display: flex;
     align-items: center;
     background-color: white;
-    margin-bottom: 20px;
     margin-right: 20px;
     height: 35px;
     width: 65px;
+    border: solid 1px black;
     border-radius: 30px;
 }
 
@@ -79,8 +84,8 @@ ul {
 .manage-spots-container {
     padding: 5px 0px 5px;
     margin-bottom: 5px;
-    border-top: solid gray;
-    border-bottom: solid gray;
+    border-top: solid 1px gray;
+    border-bottom: solid 1px gray;
 }
 
 .manage-spots {
@@ -97,6 +102,7 @@ ul {
     font-weight: bold;
     height: 40px;
     width: 85px;
+    border: solid 1px black;
     border-radius: 25px;
     margin-top: 5px;
     margin-left: 30px;
@@ -111,7 +117,6 @@ ul {
     text-decoration: none;
     font-weight: bold;
     color: black;
-    margin-top: 10px;
     margin-right: 10px;
 }
 

@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import CreateReviewModal from '../CreateReviewModal';
 import DeleteReviewModal from '../DeleteReviewModal';
-import { getAllSpots, getSpotDetail } from '../../store/spot';
+import { getAllSpots, getSpotDetail, clearSingleSpot } from '../../store/spot';
 import { getSpotReviews } from '../../store/review';
 import './SpotDetails.css';
 
@@ -38,6 +38,7 @@ const SpotDetails = () => {
   // populate store with allSpots and singleSpot on render in case of refresh on spotDetails page
   useEffect(() => {
     dispatch(getAllSpots());
+    dispatch(clearSingleSpot());
     dispatch(getSpotDetail(spotId));
     dispatch(getSpotReviews(spotId));
   }, [dispatch, spotId]);
