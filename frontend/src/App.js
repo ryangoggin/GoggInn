@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPageAllSpots from "./components/LandingPageAllSpots";
+import LandingPageFooter from "./components/LandingPageFooter";
 import SpotDetails from "./components/SpotDetails";
 import CreateSpotForm from "./components/CreateSpot";
 import ManageSpots from "./components/ManageSpots";
@@ -23,6 +24,7 @@ function App() {
         <Switch>
           <Route exact path="/">
             <LandingPageAllSpots />
+            <LandingPageFooter />
           </Route>
           <Route path="/spots/new">
             <CreateSpotForm />
