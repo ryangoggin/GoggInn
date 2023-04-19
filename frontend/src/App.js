@@ -9,6 +9,7 @@ import SpotDetails from "./components/SpotDetails";
 import CreateSpotForm from "./components/CreateSpot";
 import ManageSpots from "./components/ManageSpots";
 import GetEditSpot from "./components/EditSpot/GetEditSpot";
+import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ function App() {
             <SpotDetails />
           </Route>
           <Route>
-            <p>Page Not Found</p>
+            <NotFoundPage />
           </Route>
         </Switch>
       )}
