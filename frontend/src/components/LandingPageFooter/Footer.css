@@ -1,0 +1,61 @@
+.footer-container {
+    background-color: white;
+
+    position: fixed;
+    bottom: 0;
+
+    z-index: 6;
+
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border-top: solid 1px gray;
+}
+
+.footer-button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+
+    padding: 0;
+    margin-right: 10px;
+
+    background: none;
+    border: none;
+    height: 29px;
+}
+
+.footer-button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.footer-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-left-top {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.footer-left-bottom {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.footer-text {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+
+.footer-right {
+    display: flex;
+    flex-wrap: wrap;
+
+    height: 29px;
+}
