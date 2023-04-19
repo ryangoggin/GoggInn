@@ -40,6 +40,28 @@ GoggInn is a full-stack clone of Airbnb made with JS using React and Redux on th
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/112151669/233133629-c559e02c-24a3-4f7c-b6df-f3db191643c6.png">
 
 * Spot Details (Only one Spot Image)
+<img width="959" alt="image" src="https://user-images.githubusercontent.com/112151669/233134000-dd44e57e-39da-4239-be17-e6de50744997.png">
+
+* Create a Spot
+![image](https://user-images.githubusercontent.com/112151669/233134160-e74e6172-b27e-4821-b5c2-a253ff1b8afd.png)
+
+* Manage Owned Spots
+![image](https://user-images.githubusercontent.com/112151669/233134379-efaddc33-48c7-4c7c-b712-50225152d558.png)
+
+* Update an Owned Spot
+![image](https://user-images.githubusercontent.com/112151669/233134520-392ec566-73d2-4d57-9a75-f085628e92ab.png)
+
+* Delete an Owned Spot
+<img width="959" alt="image" src="https://user-images.githubusercontent.com/112151669/233134661-b5624aee-b4e0-4b85-892f-11c0f190df86.png">
 
 ### Reviews
+* Spot Reviews (on Spot Details)
+<img width="958" alt="image" src="https://user-images.githubusercontent.com/112151669/233135255-95d70048-99f4-4aa2-9e28-5179107812ac.png">
+
+* Create Review for an Unowned and Unreviewed Spot
+<img width="959" alt="image" src="https://user-images.githubusercontent.com/112151669/233135890-dce136a7-5fe6-4b4d-b3f4-038a1f226f9e.png">
+
+* Delete Current User Review
+<img width="959" alt="image" src="https://user-images.githubusercontent.com/112151669/233135393-5f76c5e4-2a22-4776-b78a-1282f6ba10e7.png">
+
 
