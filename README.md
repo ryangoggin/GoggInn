@@ -36,6 +36,12 @@ GoggInn is a full-stack clone of Airbnb made with JS using React and Redux on th
 ![GoggInn - Login](https://user-images.githubusercontent.com/112151669/231615344-08d69492-f8db-49b9-9dc2-55875e02036e.gif)
 
 ### Spots
+* Landing Page (Logged Out)
+<img width="959" alt="image" src="https://user-images.githubusercontent.com/112151669/233161368-bbf78d1a-4c3f-4301-b9a8-01fba32411a4.png">
+
+* Landing Page (Logged In)
+<img width="959" alt="image" src="https://user-images.githubusercontent.com/112151669/233161564-5c51ea00-06c9-428a-95f8-4e5a0cba8843.png">
+
 * Spot Details (More than one Spot Image)
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/112151669/233133629-c559e02c-24a3-4f7c-b6df-f3db191643c6.png">
 
