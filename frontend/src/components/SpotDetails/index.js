@@ -86,16 +86,18 @@ const SpotDetails = () => {
       <h1>{spot.name}</h1>
       <h3>{spot.city}, {spot.state}, {spot.country}</h3>
     </div>
-    <div className={(smallSpotImages.length > 0) ? 'spot-details-image-container': 'big-image-only-container'}>
-      <div className={(smallSpotImages.length > 0) ? 'big-image-container' : 'big-image-only-sub-container'}>
-        <img key={`spotImageId${bigSpotImage.id}`} className={(smallSpotImages.length > 0) ? 'big-image' : 'big-image-only'} src={bigSpotImage.url} alt={`spotImage #${bigSpotImage.id}`} />
-      </div>
-      <div className={(smallSpotImages.length > 0) ? 'small-images-container' : 'hidden'}>
-        {smallSpotImages.map((spotImage) => {
-            return (
-              <img key={`spotImageId${spotImage.id}`} className='small-image' src={spotImage.url} alt={`spotImage #${spotImage.id}`} />
-            );
-          })}
+    <div className='spot-images-container'>
+      <div className={(smallSpotImages.length > 0) ? 'spot-details-image-container': 'big-image-only-container'}>
+        <div className={(smallSpotImages.length > 0) ? 'big-image-container' : 'big-image-only-sub-container'}>
+          <img key={`spotImageId${bigSpotImage.id}`} className={(smallSpotImages.length > 0) ? 'big-image' : 'big-image-only'} src={bigSpotImage.url} alt={`spotImage #${bigSpotImage.id}`} />
+        </div>
+        <div className={(smallSpotImages.length > 0) ? 'small-images-container' : 'hidden'}>
+          {smallSpotImages.map((spotImage) => {
+              return (
+                <img key={`spotImageId${spotImage.id}`} className='small-image' src={spotImage.url} alt={`spotImage #${spotImage.id}`} />
+              );
+            })}
+        </div>
       </div>
     </div>
     <div className='spot-info-container'>
