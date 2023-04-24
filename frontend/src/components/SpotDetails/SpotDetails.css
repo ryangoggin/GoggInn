@@ -12,8 +12,14 @@ h1, h2, h3, p {
     margin: 0px 40px 0px;
 }
 
+/* added to make images consistent width, remove and comment in widths below to go back to dynamic sizing (had bad cropping) */
+.spot-images-container {
+    display: flex;
+    justify-content: center;
+}
+
 .spot-details-image-container {
-    margin: 0 auto;
+    margin: auto;
     padding: 0px 40px 0px;
     display: grid;
     gap: 2px;
@@ -21,7 +27,8 @@ h1, h2, h3, p {
 }
 
 .big-image {
-    width: 100%;
+    /* width: 100%; */
+    width: 400px;
     height: 412px;
 
     border-radius: 20px;
@@ -55,7 +62,7 @@ h1, h2, h3, p {
 }
 
 .big-image-only {
-    width: 50%;
+    /* width: 50%; */
     height: 412px;
 
     border-radius: 20px;
