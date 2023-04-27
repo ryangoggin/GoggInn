@@ -37,6 +37,11 @@ h1, h2, h3, p {
     object-position: bottom;
 }
 
+.big-image-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .small-images-container {
     width: 100%;
     margin: 0 auto;
