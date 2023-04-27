@@ -15,7 +15,7 @@ function LandingPageFooter(){
     }
 
     function handlePixelPal() {
-        window.open("https://pixelpal.onrender.com/", "_blank");
+        window.open("https://pixel-pal.onrender.com/", "_blank");
     }
 
     function handleGoggbook() {
