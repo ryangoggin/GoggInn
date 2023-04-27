@@ -38,6 +38,7 @@ a.update-spot {
 
 .user-spots-container {
     max-width: 1200px;
+    width: fit-content;
     padding: 20px 40px 20px;
     margin: 0 auto;
     display: grid;
